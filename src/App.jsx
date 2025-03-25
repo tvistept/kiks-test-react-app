@@ -38,7 +38,7 @@ const fetchBookings = useCallback(async () => {
   setIsLoading(true);
   setError(null);
   try {
-    const response = await fetch('http://localhost:5000/api/bookings'); // Или ваш URL API
+    const response = await fetch('http://82.146.45.144:5000/api/bookings'); // Или ваш URL API
     if (!response.ok) {
       throw new Error('Ошибка загрузки бронирований');
     }
@@ -505,7 +505,7 @@ useEffect(() => {
         </button> */}
 
         <button className="booking-button" onClick={handleBookingButtonClick}>
-          Мои брони
+          Мои брони123
         </button>
 
         {/* Подсказка */}
