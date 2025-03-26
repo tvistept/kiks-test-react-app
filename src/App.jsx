@@ -38,7 +38,7 @@ const fetchBookings = useCallback(async () => {
   setIsLoading(true);
   setError(null);
   try {
-    const response = await fetch('http://82.146.45.144:5000/api/bookings'); // Или ваш URL API
+    const response = await fetch('https://kiks-app.ru:5000/api/bookings'); // Или ваш URL API
     if (!response.ok) {
       throw new Error('Ошибка загрузки бронирований');
     }
