@@ -505,7 +505,7 @@ useEffect(() => {
         </button> */}
 
         <button className="booking-button" onClick={handleBookingButtonClick}>
-          Мои брони123
+          Мои брони
         </button>
 
         {/* Подсказка */}
