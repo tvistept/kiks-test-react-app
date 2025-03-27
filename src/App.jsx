@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import {useTelegram} from "./hooks/useTelegram";
-const {tg, query_id, user} = useTelegram();
+
 
 function App() {
-  useEffect(() => {
-    tg.ready();
-  }, [])
+  const {tg, user} = useTelegram();
+
+  // useEffect(() => {
+  //   tg.ready();
+  // }, [])
 
   tg.expand();
   console.log(user)
-  // const userChatId = 93753787;
+  const userChatId = 93753787;
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
   const [bookingToDelete, setBookingToDelete] = useState(null); // Бронирование, которое пользователь хочет удалить
@@ -90,7 +92,8 @@ function App() {
   // Загружаем бронирования при монтировании компонента
   useEffect(() => {
     fetchBookings();
-  }, [fetchBookings]);
+    fetchUser(userChatId);
+  }, [fetchBookings, fetchUser]);
 
 
   // Функция для генерации дат на неделю вперёд
