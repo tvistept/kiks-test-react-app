@@ -17,9 +17,7 @@ function App() {
       console.log("User data not available.");
     }
   }
-  const tgId = new URLSearchParams(window.location.search).get('user_id');
-  console.log(tgId);
-  const userChatId = 93753787;
+  const userChatId = new URLSearchParams(window.location.search).get('user_id');;
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
   const [bookingToDelete, setBookingToDelete] = useState(null); // Бронирование, которое пользователь хочет удалить
