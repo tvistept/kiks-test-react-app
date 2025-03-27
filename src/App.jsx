@@ -7,7 +7,6 @@ function App() {
   const {tg} = useTelegram();
   tg.expand();
   const userChatId = new URLSearchParams(window.location.search).get('user_id');
-  console.log(userChatId)
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
   const [bookingToDelete, setBookingToDelete] = useState(null); // Бронирование, которое пользователь хочет удалить
@@ -54,7 +53,7 @@ function App() {
       }));
       setBookings(dataToSet);
       setExistingBookings(dataToSet);
-      setUserBookings(dataToSet.filter(booking => booking.chat_id === userChatId).sort((a, b) => new Date(a.date) - new Date(b.date)));
+      setUserBookings(dataToSet.filter(booking => booking.chat_id == userChatId).sort((a, b) => new Date(a.date) - new Date(b.date)));
     } catch (err) {
       setError(err.message);
       console.error('Ошибка при загрузке бронирований:', err);
@@ -454,12 +453,11 @@ function App() {
       try {
         // const bookingData = await saveBookingData(newBooking);
         // Обновляем состояние
-        setBookings([...bookings, bookingData]);
-        setExistingBookings([...existingBookings, bookingData]);
-        setSelectedTimeSlot(null);
-        setBookingPopupOpen(false);
-        setFormData({ name: '', phone: '', hours: 1 });
-        // onSendData()
+        // setBookings([...bookings, newBooking]);
+        // setExistingBookings([...existingBookings, newBooking]);
+        // setSelectedTimeSlot(null);
+        // setBookingPopupOpen(false);
+        // setFormData({ name: '', phone: '', hours: 1 });
         tg.sendData(JSON.stringify(newBooking));
 
         setNotification('Бронирование успешно создано!');
