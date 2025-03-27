@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import {useTelegram} from "./hooks/useTelegram";
-const {tg, query_id} = useTelegram();
+const {tg, query_id, user} = useTelegram();
 
 function App() {
   useEffect(() => {
@@ -9,8 +9,7 @@ function App() {
   }, [])
 
   tg.expand();
-  const userChatId = tg.initDataUnsafe?.user?.id;
-  console.log(userChatId)
+  console.log(user)
   // const userChatId = 93753787;
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
