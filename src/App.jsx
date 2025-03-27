@@ -69,11 +69,11 @@ function App() {
   }, []);
 
   // Функция для загрузки пользователя с сервера по chat_id
-  const fetchUser = useCallback(async (userChatId) => {
+  const fetchUser = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://kiks-app.ru:5000/api/get-user?chatId=${userChatId}`);
+      const response = await fetch(`https://kiks-app.ru:5000/api/get-user`);
       if (!response.ok) {
         throw new Error('Ошибка загрузки пользователя');
       }
@@ -92,7 +92,7 @@ function App() {
   // Загружаем бронирования при монтировании компонента
   useEffect(() => {
     fetchBookings();
-    fetchUser(userChatId);
+    fetchUser();
   }, [fetchBookings, fetchUser]);
 
 
