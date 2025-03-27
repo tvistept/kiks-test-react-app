@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import {useTelegram} from "./hooks/useTelegram";
+const {tg, query_id} = useTelegram();
 
 function App() {
-  const {tg, query_id} = useTelegram();
+  useEffect(() => {
+    tg.ready();
+  }, [])
+
   tg.expand();
   const userChatId = tg.initDataUnsafe?.user?.id;
   console.log(userChatId)
@@ -68,28 +72,14 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://kiks-app.ru:5000/api/users?chat_id=${userChatId}`);
+      const response = await fetch(`https://kiks-app.ru:5000/api/get-user?chatId=${userChatId}`);
       if (!response.ok) {
         throw new Error('Ошибка загрузки пользователя');
       }
       const data = await response.json();
       
-      // Предполагаем, что сервер возвращает массив пользователей или одного пользователя
-      // Если сервер возвращает массив, берем первого пользователя
       const userData = Array.isArray(data) ? data[0] : data;
       console.log(userData);
-      
-      // // Форматируем данные пользователя
-      // const userToSet = {
-      //   id: userData.user_id,
-      //   name: userData.user_name,
-      //   chatId: userData.chat_id,
-      //   phone: userData.phone,
-      //   email: userData.email,
-      //   // Добавьте другие необходимые поля
-      // };
-      
-      // setUser(userToSet);
     } catch (err) {
       setError(err.message);
       console.error('Ошибка при загрузке пользователя:', err);
@@ -97,6 +87,11 @@ function App() {
       setIsLoading(false);
     }
   }, []);
+
+  // Загружаем бронирования при монтировании компонента
+  useEffect(() => {
+    fetchBookings();
+  }, [fetchBookings]);
 
 
   // Функция для генерации дат на неделю вперёд
@@ -396,7 +391,6 @@ function App() {
       });
     }
   };
-
 
   // Имитация запроса на получение данных пользователя
   const fetchUserData = async (phone) => {
