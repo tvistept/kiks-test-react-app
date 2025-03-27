@@ -5,8 +5,8 @@ import {useTelegram} from "./hooks/useTelegram";
 function App() {
   const {tg, query_id} = useTelegram();
   tg.expand();
-  console.log(tg)
   const userChatId = tg.initDataUnsafe?.user?.id;
+  console.log(userChatId)
   // const userChatId = 93753787;
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
@@ -63,48 +63,40 @@ function App() {
     }
   }, []);
 
-  // Функция для загрузки бронирований с сервера
-  const fetchUser = useCallback(async () => {
+  // Функция для загрузки пользователя с сервера по chat_id
+  const fetchUser = useCallback(async (userChatId) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://kiks-app.ru:5000/api/get-user', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ chatId: userChatId }),
-      });
+      const response = await fetch(`https://kiks-app.ru:5000/api/users?chat_id=${userChatId}`);
       if (!response.ok) {
         throw new Error('Ошибка загрузки пользователя');
       }
       const data = await response.json();
-      console.log(data)
-      // const user = users.find((user) => user.phone === phone);
-      // resolve(user || null); // Возвращаем пользователя или null, если не найден
-      // const data = await response.json();
-      // let dataToSet = data.map(booking => ({
-      //   id: booking.booking_id,
-      //   table: booking.table,
-      //   date: booking.booking_date.slice(0, 10),
-      //   time: booking.time.slice(0, 5),
-      //   hours: booking.hours,
-      //   name: booking.user_name,
-      //   chat_id: booking.chat_id
-      // }));
-      // setBookings(dataToSet);
-      // setExistingBookings(dataToSet);
-      // setUserBookings(dataToSet.filter(booking => booking.chat_id === userChatId).sort((a, b) => new Date(a.date) - new Date(b.date)));
+      
+      // Предполагаем, что сервер возвращает массив пользователей или одного пользователя
+      // Если сервер возвращает массив, берем первого пользователя
+      const userData = Array.isArray(data) ? data[0] : data;
+      console.log(userData);
+      
+      // // Форматируем данные пользователя
+      // const userToSet = {
+      //   id: userData.user_id,
+      //   name: userData.user_name,
+      //   chatId: userData.chat_id,
+      //   phone: userData.phone,
+      //   email: userData.email,
+      //   // Добавьте другие необходимые поля
+      // };
+      
+      // setUser(userToSet);
     } catch (err) {
       setError(err.message);
-      console.error('Ошибка при загрузке данных пользователя:', err);
+      console.error('Ошибка при загрузке пользователя:', err);
     } finally {
       setIsLoading(false);
     }
   }, []);
-
-  // Загружаем бронирования при монтировании компонента
-  useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
 
 
   // Функция для генерации дат на неделю вперёд
