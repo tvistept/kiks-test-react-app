@@ -5,8 +5,9 @@ import {useTelegram} from "./hooks/useTelegram";
 function App() {
   const {tg, query_id} = useTelegram();
   tg.expand();
-  // const userChatId = tg.initDataUnsafe?.user?.id;
-  const userChatId = 93753787;
+  console.log(tg)
+  const userChatId = tg.initDataUnsafe?.user?.id;
+  // const userChatId = 93753787;
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
   const [bookingToDelete, setBookingToDelete] = useState(null); // Бронирование, которое пользователь хочет удалить
@@ -28,47 +29,82 @@ function App() {
   const [notification, setNotification] = useState(null); // Состояние для уведомления
   const [hintMessage, setHintMessage] = useState(null);
 
-  // Добавьте этот код в начало вашего компонента App, рядом с другими useState
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-const [isLoading, setIsLoading] = useState(false);
-const [error, setError] = useState(null);
-
-// Функция для загрузки бронирований с сервера
-const fetchBookings = useCallback(async () => {
-  setIsLoading(true);
-  setError(null);
-  try {
-    const response = await fetch('https://kiks-app.ru:5000/api/bookings'); // Или ваш URL API
-    if (!response.ok) {
-      throw new Error('Ошибка загрузки бронирований');
+  // Функция для загрузки бронирований с сервера
+  const fetchBookings = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('https://kiks-app.ru:5000/api/bookings'); 
+      if (!response.ok) {
+        throw new Error('Ошибка загрузки бронирований');
+      }
+      const data = await response.json();
+      
+      let dataToSet = data.map(booking => ({
+        id: booking.booking_id,
+        table: booking.table,
+        date: booking.booking_date.slice(0, 10),
+        time: booking.time.slice(0, 5),
+        hours: booking.hours,
+        name: booking.user_name,
+        chat_id: booking.chat_id
+      }));
+      setBookings(dataToSet);
+      setExistingBookings(dataToSet);
+      setUserBookings(dataToSet.filter(booking => booking.chat_id === userChatId).sort((a, b) => new Date(a.date) - new Date(b.date)));
+    } catch (err) {
+      setError(err.message);
+      console.error('Ошибка при загрузке бронирований:', err);
+    } finally {
+      setIsLoading(false);
     }
-    const data = await response.json();
-    
-    let dataToSet = data.map(booking => ({
-      id: booking.booking_id,
-      table: booking.table,
-      date: booking.booking_date.slice(0, 10),
-      time: booking.time.slice(0, 5),
-      hours: booking.hours,
-      name: booking.user_name,
-      chat_id: booking.chat_id
-    }));
-    setBookings(dataToSet);
-    setExistingBookings(dataToSet);
-    console.log(dataToSet.filter(booking => booking.chat_id === userChatId).sort((a, b) => new Date(a.date) - new Date(b.date)))
-    setUserBookings(dataToSet.filter(booking => booking.chat_id === userChatId).sort((a, b) => new Date(a.date) - new Date(b.date)));
-  } catch (err) {
-    setError(err.message);
-    console.error('Ошибка при загрузке бронирований:', err);
-  } finally {
-    setIsLoading(false);
-  }
-}, []);
+  }, []);
 
-// Загружаем бронирования при монтировании компонента
-useEffect(() => {
-  fetchBookings();
-}, [fetchBookings]);
+  // Функция для загрузки бронирований с сервера
+  const fetchUser = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('https://kiks-app.ru:5000/api/get-user', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ chatId: userChatId }),
+      });
+      if (!response.ok) {
+        throw new Error('Ошибка загрузки пользователя');
+      }
+      const data = await response.json();
+      console.log(data)
+      // const user = users.find((user) => user.phone === phone);
+      // resolve(user || null); // Возвращаем пользователя или null, если не найден
+      // const data = await response.json();
+      // let dataToSet = data.map(booking => ({
+      //   id: booking.booking_id,
+      //   table: booking.table,
+      //   date: booking.booking_date.slice(0, 10),
+      //   time: booking.time.slice(0, 5),
+      //   hours: booking.hours,
+      //   name: booking.user_name,
+      //   chat_id: booking.chat_id
+      // }));
+      // setBookings(dataToSet);
+      // setExistingBookings(dataToSet);
+      // setUserBookings(dataToSet.filter(booking => booking.chat_id === userChatId).sort((a, b) => new Date(a.date) - new Date(b.date)));
+    } catch (err) {
+      setError(err.message);
+      console.error('Ошибка при загрузке данных пользователя:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Загружаем бронирования при монтировании компонента
+  useEffect(() => {
+    fetchBookings();
+  }, [fetchBookings]);
 
 
   // Функция для генерации дат на неделю вперёд
@@ -83,19 +119,6 @@ useEffect(() => {
     return dates;
   };
 
-  const onSendData = useCallback(() => {
-    const data = {
-      name: formData.name,
-      phone: formData.phone,
-      hours: formData.hours,
-      table: selectedTable,
-      date: selectedDate,
-      time: selectedTimeSlot,
-    };
-    tg.sendData(JSON.stringify(data));
-    
-  });
-
   // Функция для генерации временных слотов с 12:00 до 02:00
   const generateTimeSlots = () => {
     const slots = [];
@@ -108,7 +131,6 @@ useEffect(() => {
 
   const dates = generateDates(); // Генерируем даты
   const timeSlots = generateTimeSlots(); // Генерируем временные слоты
-
 
   const handleTestButtonClick = () => {
     let table = isTableAvailableForUser(selectedTable, selectedDate);
@@ -351,7 +373,8 @@ useEffect(() => {
 
   const handleMainBookButtonClick = async (time) => {
     setBookingPopupOpen(true); // Открываем попап бронирования
-  
+    fetchUser()
+    // Получаем первое бронирование пользователя на выбранную дату
     // Если у пользователя уже есть брони, пытаемся получить его данные
     if (bookings.length > 0) {
       const lastBooking = bookings[bookings.length - 1];
@@ -434,19 +457,6 @@ useEffect(() => {
         setTimeout(() => setNotification(null), 3000);
         return;
       }
-
-      // Сохраняем данные пользователя
-      try {
-        await saveUserData({
-          name: formData.name,
-          phone: formData.phone,
-        });
-      } catch (error) {
-        console.error('Ошибка при сохранении данных пользователя:', error);
-        setNotification('Ошибка при сохранении данных пользователя.');
-        setTimeout(() => setNotification(null), 3000);
-        return;
-      }
   
       // Создаем новое бронированием
       const newBooking = {
@@ -461,8 +471,7 @@ useEffect(() => {
 
       // Сохраняем бронирование
       try {
-        const bookingData = await saveBookingData(newBooking);
-
+        // const bookingData = await saveBookingData(newBooking);
         // Обновляем состояние
         setBookings([...bookings, bookingData]);
         setExistingBookings([...existingBookings, bookingData]);
@@ -479,14 +488,6 @@ useEffect(() => {
         setNotification('Ошибка при создании бронирования.');
         setTimeout(() => setNotification(null), 3000);
       }
-      // setBookings([...bookings, newBooking]);
-      // setExistingBookings([...existingBookings, newBooking]);
-      // setSelectedTimeSlot(null);
-      // setBookingPopupOpen(false);
-      // setFormData({ name: '', phone: '', hours: 1 });
-  
-      // setNotification('Бронирование успешно создано!');
-      // setTimeout(() => setNotification(null), 3000);
     }
   };
 
