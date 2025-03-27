@@ -5,13 +5,19 @@ import {useTelegram} from "./hooks/useTelegram";
 
 function App() {
   const {tg, user} = useTelegram();
-
-  // useEffect(() => {
-  //   tg.ready();
-  // }, [])
-
   tg.expand();
-  console.log(user)
+
+  if (window.Telegram && Telegram.WebApp) {
+    const user = Telegram.WebApp.initDataUnsafe?.user;
+    
+    if (user) {
+      const userId = user.id; // ID пользователя
+      console.log("User ID:", userId);
+    } else {
+      console.log("User data not available.");
+    }
+  }
+
   const userChatId = 93753787;
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
@@ -80,7 +86,6 @@ function App() {
       const data = await response.json();
       
       const userData = Array.isArray(data) ? data[0] : data;
-      console.log(userData);
     } catch (err) {
       setError(err.message);
       console.error('Ошибка при загрузке пользователя:', err);
@@ -144,7 +149,6 @@ function App() {
 
   // Обработчик удаления бронирования
   const handleDeleteBooking = async () => {
-    console.log(bookingToDelete);
     if (bookingToDelete) {
       try {
         // const response = await fetch(`http://localhost:5000/api/bookings/${bookingToDelete}`, {
