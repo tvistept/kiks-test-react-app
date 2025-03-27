@@ -4,20 +4,10 @@ import {useTelegram} from "./hooks/useTelegram";
 
 
 function App() {
-  const {tg, user} = useTelegram();
+  const {tg} = useTelegram();
   tg.expand();
-
-  if (window.Telegram && Telegram.WebApp) {
-    const user = Telegram.WebApp.initDataUnsafe?.user;
-    
-    if (user) {
-      const userId = user.id; // ID пользователя
-      console.log("User ID:", userId);
-    } else {
-      console.log("User data not available.");
-    }
-  }
-  const userChatId = new URLSearchParams(window.location.search).get('user_id');;
+  const userChatId = new URLSearchParams(window.location.search).get('user_id');
+  console.log(userChatId)
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
   const [bookingToDelete, setBookingToDelete] = useState(null); // Бронирование, которое пользователь хочет удалить
@@ -78,7 +68,7 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://kiks-app.ru:5000/api/get-user`);
+      const response = await fetch(`https://kiks-app.ru:5000/api/get-user?chat_id=${userChatId}`);
       if (!response.ok) {
         throw new Error('Ошибка загрузки пользователя');
       }
