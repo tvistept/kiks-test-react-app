@@ -10,10 +10,9 @@ function App() {
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
   const [bookingToDelete, setBookingToDelete] = useState(null); // Бронирование, которое пользователь хочет удалить
   const [bookings, setBookings] = useState([]);
-  const [users, setUsers] = useState([]); // Имитация таблицы пользователей
   const [existingBookings, setExistingBookings] = useState([]);
   const [userBookings, setUserBookings] = useState([]);
-
+  const [userData, setUserData] = useState({});
   const [selectedTable, setSelectedTable] = useState(3); // Состояние для выбранного стола
   const [selectedDate, setSelectedDate] = useState(null); // Состояние для выбранной даты
   const [openDate, setOpenDate] = useState(null); // Состояние для открытой даты (чтобы показывать слоты)
@@ -29,7 +28,6 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  let userData = {};
 
   // Функция для загрузки бронирований с сервера
   const fetchBookings = useCallback(async () => {
@@ -62,7 +60,7 @@ function App() {
     }
   }, []);
 
-  // Функция для загрузки пользователя с сервера по chat_id
+  // Функция для загрузки пользователя с сервера
   const fetchUser = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -72,10 +70,8 @@ function App() {
         throw new Error('Ошибка загрузки пользователя');
       }
       const data = await response.json();
-      console.log(data);
-      userData = Array.isArray(data) ? data[0] : data;
-      console.log(userData);
-      // return userData;
+      const user = Array.isArray(data) ? data[0] : data;
+      setUserData(user); // Сохраняем данные в состоянии
     } catch (err) {
       setError(err.message);
       console.error('Ошибка при загрузке пользователя:', err);
@@ -361,7 +357,7 @@ function App() {
     if (userData) {
       // Подставляем данные пользователя в форму
       setFormData({
-        name: userData.name,
+        name: userData.firstName,
         phone: userData.phone,
         hours: 1, // Сбрасываем количество часов
       });
@@ -373,32 +369,6 @@ function App() {
         hours: 1,
       });
     }
-  };
-
-  // Имитация запроса на сохранение пользователя
-  const saveUserData = async (user) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        setUsers((prevUsers) => {
-          const existingUser = prevUsers.find((u) => u.phone === user.phone);
-          if (!existingUser) {
-            return [...prevUsers, user]; // Добавляем нового пользователя
-          }
-          return prevUsers; // Пользователь уже существует
-        });
-        resolve();
-      }, 500); // Имитируем задержку сети
-    });
-  };
-
-  // Имитация запроса на создание бронирования
-  const saveBookingData = async (booking) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        setBookings((prevBookings) => [...prevBookings, booking]);
-        resolve(booking);
-      }, 500); // Имитируем задержку сети
-    });
   };
 
   const handleBook = async  () => {
