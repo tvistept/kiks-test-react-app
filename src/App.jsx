@@ -169,7 +169,7 @@ function App() {
   const handleDeleteBooking = async () => {
     if (bookingToDelete) {
       await deleteBooking(bookingToDelete);
-      // closeDeletePopup(); // Закрываем попап после удаления
+      closeDeletePopup(); // Закрываем попап после удаления
     }
   };
 
