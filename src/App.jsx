@@ -72,8 +72,10 @@ function App() {
         throw new Error('Ошибка загрузки пользователя');
       }
       const data = await response.json();
+      console.log(data);
       userData = Array.isArray(data) ? data[0] : data;
-      return userData;
+      console.log(userData);
+      // return userData;
     } catch (err) {
       setError(err.message);
       console.error('Ошибка при загрузке пользователя:', err);
@@ -354,6 +356,8 @@ function App() {
 
   const handleMainBookButtonClick = async (time) => {
     setBookingPopupOpen(true); // Открываем попап бронирования
+    console.log(userChatId);
+    console.log(userData);
     if (userData) {
       // Подставляем данные пользователя в форму
       setFormData({
