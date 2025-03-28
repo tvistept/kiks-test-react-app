@@ -5,9 +5,7 @@
 }
 
 body {
-  /* background: #212121; */
   background: var(--tg-theme-bg-color);
-  /* background: black; */
   color: var(--tg-theme-text-color);
   margin: 0;
   font-family: 'Roboto', sans-serif; /* Подключаем шрифт Roboto */
@@ -17,8 +15,8 @@ body {
 
 .App {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: top;
+  align-items: top;
   height: 100vh;
 }
 
@@ -29,6 +27,7 @@ body {
   align-items: center;
   gap: 10px;
   width: 100%;
+  padding-top: 20px;
   max-width: 400px; /* Ограничиваем ширину контейнера */
   margin: 0 auto; /* Центрируем контейнер */
 }

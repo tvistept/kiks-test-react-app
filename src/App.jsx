@@ -80,6 +80,38 @@ function App() {
     }
   }, []);
 
+  const deleteBooking = async (bookingId) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`https://kiks-app.ru:5000/api/bookings/${bookingId}?chat_id=${userChatId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Ошибка удаления бронирования');
+      }
+  
+      // Обновляем локальное состояние после успешного удаления
+      setBookings(bookings.filter(booking => booking.id !== bookingId));
+      setExistingBookings(existingBookings.filter(booking => booking.id !== bookingId));
+      setUserBookings(userBookings.filter(booking => booking.id !== bookingId));
+  
+      setNotification('Бронирование успешно удалено!');
+      setTimeout(() => setNotification(null), 3000);
+    } catch (err) {
+      setError(err.message);
+      setNotification('Ошибка при удалении бронирования');
+      setTimeout(() => setNotification(null), 3000);
+      console.error('Ошибка при удалении бронирования:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Загружаем бронирования при монтировании компонента
   useEffect(() => {
     fetchBookings();
@@ -136,24 +168,8 @@ function App() {
   // Обработчик удаления бронирования
   const handleDeleteBooking = async () => {
     if (bookingToDelete) {
-      try {
-        // const response = await fetch(`http://localhost:5000/api/bookings/${bookingToDelete}`, {
-        //   method: 'DELETE'
-        // });
-        
-        // if (!response.ok) {
-        //   throw new Error('Ошибка удаления бронирования');
-        // }
-        
-        setBookings(bookings.filter((booking) => booking.id !== bookingToDelete));
-        setExistingBookings(existingBookings.filter((booking) => booking.id !== bookingToDelete));
-        closeDeletePopup();
-        setNotification('Бронирование успешно удалено');
-        setTimeout(() => setNotification(null), 3000);
-      } catch (err) {
-        setError(err.message);
-        console.error('Ошибка при удалении бронирования:', err);
-      }
+      await deleteBooking(bookingToDelete);
+      // closeDeletePopup(); // Закрываем попап после удаления
     }
   };
 
