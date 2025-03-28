@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import {useTelegram} from "./hooks/useTelegram";
 
-
 function App() {
   const {tg} = useTelegram();
   tg.expand();
@@ -30,6 +29,7 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  let userData = {};
 
   // Функция для загрузки бронирований с сервера
   const fetchBookings = useCallback(async () => {
@@ -72,8 +72,8 @@ function App() {
         throw new Error('Ошибка загрузки пользователя');
       }
       const data = await response.json();
-      
-      const userData = Array.isArray(data) ? data[0] : data;
+      userData = Array.isArray(data) ? data[0] : data;
+      return userData;
     } catch (err) {
       setError(err.message);
       console.error('Ошибка при загрузке пользователя:', err);
@@ -354,46 +354,21 @@ function App() {
 
   const handleMainBookButtonClick = async (time) => {
     setBookingPopupOpen(true); // Открываем попап бронирования
-    fetchUser()
-    // Получаем первое бронирование пользователя на выбранную дату
-    // Если у пользователя уже есть брони, пытаемся получить его данные
-    if (bookings.length > 0) {
-      const lastBooking = bookings[bookings.length - 1];
-      const userData = await fetchUserData(lastBooking.phone);
-  
-      if (userData) {
-        // Подставляем данные пользователя в форму
-        setFormData({
-          name: userData.name,
-          phone: userData.phone,
-          hours: 1, // Сбрасываем количество часов
-        });
-      } else {
-        // Если пользователь не найден, оставляем форму пустой
-        setFormData({
-          name: '',
-          phone: '',
-          hours: 1,
-        });
-      }
+    if (userData) {
+      // Подставляем данные пользователя в форму
+      setFormData({
+        name: userData.name,
+        phone: userData.phone,
+        hours: 1, // Сбрасываем количество часов
+      });
     } else {
-      // Если бронирований нет, оставляем форму пустой
+      // Если пользователь не найден, оставляем форму пустой
       setFormData({
         name: '',
         phone: '',
         hours: 1,
       });
     }
-  };
-
-  // Имитация запроса на получение данных пользователя
-  const fetchUserData = async (phone) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const user = users.find((user) => user.phone === phone);
-        resolve(user || null); // Возвращаем пользователя или null, если не найден
-      }, 500); // Имитируем задержку сети
-    });
   };
 
   // Имитация запроса на сохранение пользователя
