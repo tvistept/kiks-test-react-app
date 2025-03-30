@@ -39,7 +39,6 @@ function App() {
         throw new Error('Ошибка загрузки бронирований');
       }
       const data = await response.json();
-      
       let dataToSet = data.map(booking => ({
         id: booking.booking_id,
         table: booking.table,
@@ -316,7 +315,7 @@ function App() {
   const canUserBookMore = (date) => {
     // Считаем количество бронирований пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date && booking.chat_id === userChatId
+      (booking) => booking.date === date && booking.chat_id == userChatId
     ).length;
   
     // Если бронирований меньше 2, пользователь может создать ещё одну
@@ -326,7 +325,7 @@ function App() {
   const isTableAvailableForUser = (table, date) => {
     // Получаем все бронирования пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date && booking.chat_id === userChatId
+      (booking) => booking.date === date && booking.chat_id == userChatId
     );
   
     // Если у пользователя уже есть бронь на этот стол, стол недоступен
@@ -341,7 +340,7 @@ function App() {
 
   const updateHintMessage = (date) => {
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date && booking.chat_id === userChatId
+      (booking) => booking.date === date && booking.chat_id == userChatId
     );
   
     if (userBookingsOnDate.length === 1) {
@@ -359,7 +358,7 @@ function App() {
   };
 
   const getFirstBookingTime = (date) => {
-    const userBookingsOnDate = bookings.filter((booking) => booking.date === date && booking.chat_id === userChatId);
+    const userBookingsOnDate = bookings.filter((booking) => booking.date === date && booking.chat_id == userChatId);
     if (userBookingsOnDate.length > 0) {
       return userBookingsOnDate[0].time; // Возвращаем время первой брони
     }
