@@ -316,7 +316,7 @@ function App() {
   const canUserBookMore = (date) => {
     // Считаем количество бронирований пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date
+      (booking) => booking.date === date && booking.chat_id === userChatId
     ).length;
   
     // Если бронирований меньше 2, пользователь может создать ещё одну
@@ -326,7 +326,7 @@ function App() {
   const isTableAvailableForUser = (table, date) => {
     // Получаем все бронирования пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date
+      (booking) => booking.date === date && booking.chat_id === userChatId
     );
   
     // Если у пользователя уже есть бронь на этот стол, стол недоступен
@@ -341,7 +341,7 @@ function App() {
 
   const updateHintMessage = (date) => {
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date
+      (booking) => booking.date === date && booking.chat_id === userChatId
     );
   
     if (userBookingsOnDate.length === 1) {
