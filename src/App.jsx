@@ -359,7 +359,7 @@ function App() {
   };
 
   const getFirstBookingTime = (date) => {
-    const userBookingsOnDate = bookings.filter((booking) => booking.date === date);
+    const userBookingsOnDate = bookings.filter((booking) => booking.date === date && booking.chat_id === userChatId);
     if (userBookingsOnDate.length > 0) {
       return userBookingsOnDate[0].time; // Возвращаем время первой брони
     }
