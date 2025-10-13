@@ -6,6 +6,11 @@ function App() {
   const {tg} = useTelegram();
   tg.expand();
   const userChatId = new URLSearchParams(window.location.search).get('user_id');
+  
+  // Новое состояние для попапа выбора клуба
+  const [isClubPopupOpen, setClubPopupOpen] = useState(true); // Открываем при старте
+  const [selectedClub, setSelectedClub] = useState(null); // Состояние для выбранного клуба
+  
   const [isPopupOpen, setPopupOpen] = useState(false); // Состояние для попапа "Мои брони"
   const [isDeletePopupOpen, setDeletePopupOpen] = useState(false); // Состояние для попапа подтверждения удаления
   const [bookingToDelete, setBookingToDelete] = useState(null); // Бронирование, которое пользователь хочет удалить
@@ -28,6 +33,18 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Функция для обработки выбора клуба
+  const handleClubSelect = (clubAddress) => {
+    setSelectedClub(clubAddress);
+    setClubPopupOpen(false); // Закрываем попап выбора клуба
+    console.log(`Выбран клуб: ${clubAddress}`);
+  };
+
+  // Функция для открытия попапа смены клуба
+  const handleChangeClub = () => {
+    setClubPopupOpen(true);
+  };
 
   // Функция для загрузки бронирований с сервера
   const fetchBookings = useCallback(async () => {
@@ -436,6 +453,31 @@ function App() {
 
   return (
     <div className="App">
+      {/* Попап выбора клуба */}
+      {isClubPopupOpen && (
+        <div className="popup-overlay">
+          <div className="club-popup-content">
+            <div className="popup-header">
+              <h2>Где хочешь играть?</h2>
+            </div>
+
+            <div className="club-buttons-container">
+              <button 
+                className="club-button"
+                onClick={() => handleClubSelect('Марата 56-58')}
+              >
+                Марата 56-58
+              </button>
+              <button 
+                className="club-button"
+                onClick={() => handleClubSelect('Каменноостровский 77')}
+              >
+                Каменноостровский 77
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Уведомление */}
       {notification && (
         <div className="notification">
@@ -447,6 +489,20 @@ function App() {
         {/* <button className="booking-button" onClick={handleTestButtonClick}>
           test button
         </button> */}
+        {/* Блок с выбранным клубом и кнопкой смены */}
+        {selectedClub && (
+          <div className="club-info-container">
+            <div className="selected-club-info">
+              <span className="club-name">{selectedClub}</span>
+              <button 
+                className="change-club-button"
+                onClick={handleChangeClub}
+              >
+                Сменить
+              </button>
+            </div>
+          </div>
+        )}
 
         <button className="booking-button" onClick={handleBookingButtonClick}>
           Мои брони
