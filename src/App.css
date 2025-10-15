@@ -642,8 +642,8 @@ input::placeholder {
 
 /* Стили для попапа выбора клуба */
 .club-popup-content {
-  background: var(--tg-theme-secondary-bg-color, #ffffff);
-  color: var(--tg-theme-text-color, #000000);
+  background:  #ffffff;
+  /* color: var(--tg-theme-text-color, #000000); */
   padding: 20px;
   border-radius: 12px;
   width: 90%;
@@ -851,11 +851,11 @@ input::placeholder {
 }
 
 .booking-color {
-  background: var(--tg-theme-link-color, #2196f3);
+  background: #2196f3;
 }
 
 .queue-color {
-  background: var(--tg-theme-hint-color, #9e9e9e);
+  background:  #9e9e9e;
 }
 
 .vip-color {
@@ -863,10 +863,10 @@ input::placeholder {
 }
 
 .pool-color {
-  background: var(--tg-theme-link-color, #4caf50);
+  background:  #4caf50;
 }
 
 .russian-color {
-  background: var(--tg-theme-link-color, #9c27b0);
+  background:  #9c27b0;
 }
 
