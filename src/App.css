@@ -642,7 +642,8 @@ input::placeholder {
 
 /* Стили для попапа выбора клуба */
 .club-popup-content {
-  background: white;
+  background: var(--tg-theme-secondary-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
   padding: 20px;
   border-radius: 12px;
   width: 90%;
@@ -792,38 +793,38 @@ input::placeholder {
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 4px;
-  color: var(--tg-theme-text-color, #000000);
+  color: #000000;
 }
 
 .table-type {
   font-size: 12px;
-  color: var(--tg-theme-hint-color, #666666);
+  color:  #666666;
 }
 
 /* Цвета для разных типов столов с учетом темы */
 .booking-table {
-  background: var(--tg-theme-secondary-bg-color, #e3f2fd);
-  border-color: var(--tg-theme-link-color, #90caf9);
+  background:  #e3f2fd;
+  border-color:  #90caf9;
 }
 
 .queue-table {
-  background: var(--tg-theme-secondary-bg-color, #f5f5f5);
-  border-color: var(--tg-theme-hint-color, #bdbdbd);
+  background:  #f5f5f5;
+  border-color:  #bdbdbd;
 }
 
 .vip-table {
-  background: var(--tg-theme-secondary-bg-color, #fff3e0);
-  border-color: var(--tg-theme-link-color, #ffb74d);
+  background:  #fff3e0;
+  border-color:  #ffb74d;
 }
 
 .pool-table {
-  background: var(--tg-theme-secondary-bg-color, #e8f5e8);
-  border-color: var(--tg-theme-link-color, #81c784);
+  background:  #e8f5e8;
+  border-color:  #81c784;
 }
 
 .russian-table {
-  background: var(--tg-theme-secondary-bg-color, #f3e5f5);
-  border-color: var(--tg-theme-link-color, #ba68c8);
+  background:  #f3e5f5;
+  border-color:  #ba68c8;
 }
 
 /* Легенда */
@@ -858,7 +859,7 @@ input::placeholder {
 }
 
 .vip-color {
-  background: var(--tg-theme-link-color, #ff9800);
+  background:#ff9800;
 }
 
 .pool-color {
@@ -868,24 +869,4 @@ input::placeholder {
 .russian-color {
   background: var(--tg-theme-link-color, #9c27b0);
 }
-
-/* Адаптивность для мобильных */
-/* @media (max-width: 480px) {
-  .tables-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .scheme-legend {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .info-block {
-    padding: 12px;
-  }
-  
-  .info-block p {
-    font-size: 13px;
-  }
-} */
 
