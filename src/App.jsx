@@ -38,7 +38,6 @@ function App() {
   const handleClubSelect = (clubAddress) => {
     setSelectedClub(clubAddress);
     setClubPopupOpen(false); // Закрываем попап выбора клуба
-    console.log(`Выбран клуб: ${clubAddress}`);
   };
 
   // Функция для открытия попапа смены клуба
@@ -470,9 +469,9 @@ function App() {
               </button>
               <button 
                 className="club-button"
-                onClick={() => handleClubSelect('Каменноостровский 77')}
+                onClick={() => handleClubSelect('Каменноостровский 26-28')}
               >
-                Каменноостровский 77
+                Каменноостровский 26-28
               </button>
             </div>
           </div>
@@ -504,6 +503,125 @@ function App() {
           </div>
         )}
 
+        {/* Блок со схемой зала */}
+        <div className="hall-scheme">
+          <h3>Схема зала</h3>
+          
+          {selectedClub === 'Марата 56-58' && (
+            <div className="scheme-content">
+              <div className="tables-grid">
+                <div className="table-item queue-table">
+                  <div className="table-number">Стол 1</div>
+                  <div className="table-type">Живая очередь</div>
+                </div>
+                <div className="table-item queue-table">
+                  <div className="table-number">Стол 2</div>
+                  <div className="table-type">Живая очередь</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 3</div>
+                  <div className="table-type">Бронь</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 4</div>
+                  <div className="table-type">Бронь</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 5</div>
+                  <div className="table-type">Бронь</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 6</div>
+                  <div className="table-type">Бронь</div>
+                </div>
+              </div>
+              <div className="scheme-legend">
+                <div className="legend-item">
+                  <div className="legend-color booking-color"></div>
+                  <span>Столы для брони</span>
+                </div>
+                <div className="legend-item">
+                  <div className="legend-color queue-color"></div>
+                  <span>Столы живой очереди</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {selectedClub === 'Каменноостровский 26-28' && (
+            <div className="scheme-content">
+              <div className="tables-grid">
+                <div className="table-item queue-table">
+                  <div className="table-number">Стол 1</div>
+                  <div className="table-type">Живая очередь</div>
+                </div>
+                <div className="table-item queue-table">
+                  <div className="table-number">Стол 2</div>
+                  <div className="table-type">Живая очередь</div>
+                </div>
+                <div className="table-item vip-table">
+                  <div className="table-number">Стол 3</div>
+                  <div className="table-type">VIP</div>
+                </div>
+                <div className="table-item vip-table">
+                  <div className="table-number">Стол 4</div>
+                  <div className="table-type">VIP</div>
+                </div>
+                <div className="table-item russian-table">
+                  <div className="table-number">Стол 5</div>
+                  <div className="table-type">Русский бильярд</div>
+                </div>
+                <div className="table-item pool-table">
+                  <div className="table-number">Стол 6</div>
+                  <div className="table-type">Пул</div>
+                </div>
+                <div className="table-item pool-table">
+                  <div className="table-number">Стол 7</div>
+                  <div className="table-type">Пул</div>
+                </div>
+                <div className="table-item pool-table">
+                  <div className="table-number">Стол 8</div>
+                  <div className="table-type">Пул</div>
+                </div>
+              </div>
+              <div className="scheme-legend">
+                <div className="legend-item">
+                  <div className="legend-color vip-color"></div>
+                  <span>VIP столы</span>
+                </div>
+                <div className="legend-item">
+                  <div className="legend-color pool-color"></div>
+                  <span>Столы для пула</span>
+                </div>
+                <div className="legend-item">
+                  <div className="legend-color russian-color"></div>
+                  <span>Русский бильярд</span>
+                </div>
+                <div className="legend-item">
+                  <div className="legend-color queue-color"></div>
+                  <span>Живая очередь</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Блок с информацией и ссылкой на гугл-таблицу */}
+        <div className="info-block">
+          <p>
+            Салют!<br />
+            Иди в <a 
+              href="https://docs.google.com/spreadsheets/d/1xubZnVNe3ED2CmUwXWHvqtwcI62RzEbIJVKeIB8a0kM" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="google-sheet-link"
+            >
+              гугл-таблицу
+            </a>, чтобы прикинуть кий к носу!<br />
+            Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
+          </p>
+        </div>
+
         <button className="booking-button" onClick={handleBookingButtonClick}>
           Мои брони
         </button>
@@ -517,6 +635,35 @@ function App() {
         )}
 
         <div className="table-buttons">
+        {(() => {
+          // Определяем диапазон столов в зависимости от выбранного клуба
+          let tablesRange = [];
+          if (selectedClub === 'Марата 56-58') {
+            tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
+          } else if (selectedClub === 'Каменноостровский 26-28') {
+            tablesRange = [3, 4, 5, 6, 7, 8]; // Столы с 3 по 8
+          }
+          
+          return tablesRange.map((tableNumber) => {
+            let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
+            const isDateAvailable = canUserBookMore(selectedDate);
+            isTableAvailable = isDateAvailable ? isTableAvailable : false;
+            
+            return (
+              <button
+                key={tableNumber}
+                className={`table-button ${selectedTable === tableNumber ? 'selected' : ''}`}
+                onClick={() => handleTableSelect(tableNumber)}
+                disabled={!isTableAvailable}
+              >
+                Стол {tableNumber}
+              </button>
+            );
+          });
+        })()}
+      </div>
+
+        {/* <div className="table-buttons">
           {[3, 4, 5, 6].map((tableNumber) => {
             let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
             const isDateAvailable = canUserBookMore(selectedDate);
@@ -533,7 +680,7 @@ function App() {
               </button>
             );
           })}
-        </div>
+        </div> */}
 
         <div className="date-buttons">
           {dates.map((date) => {

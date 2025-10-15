@@ -718,3 +718,156 @@ input::placeholder {
 .change-club-button:active {
   transform: translateY(0);
 }
+
+/* Стили для информационного блока */
+.info-block {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.info-block p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #495057;
+}
+
+.google-sheet-link {
+  color: #1a73e8;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.google-sheet-link:hover {
+  color: #0d47a1;
+  text-decoration: underline;
+}
+
+/* Стили для схемы зала */
+.hall-scheme {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.hall-scheme h3 {
+  margin: 0 0 15px 0;
+  text-align: center;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.table-item {
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.table-number {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.table-type {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Цвета для разных типов столов */
+.booking-table {
+  background: #e3f2fd;
+  border-color: #90caf9;
+}
+
+.queue-table {
+  background: #f5f5f5;
+  border-color: #bdbdbd;
+}
+
+.vip-table {
+  background: #fff3e0;
+  border-color: #ffb74d;
+}
+
+.pool-table {
+  background: #e8f5e8;
+  border-color: #81c784;
+}
+
+.russian-table {
+  background: #f3e5f5;
+  border-color: #ba68c8;
+}
+
+/* Легенда */
+.scheme-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+}
+
+.booking-color {
+  background: #e3f2fd;
+}
+
+.queue-color {
+  background: #f5f5f5;
+}
+
+.vip-color {
+  background: #fff3e0;
+}
+
+.pool-color {
+  background: #e8f5e8;
+}
+
+.russian-color {
+  background: #f3e5f5;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 480px) {
+  .tables-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .scheme-legend {
+    flex-direction: column;
+    align-items: center;
+  }
+}
