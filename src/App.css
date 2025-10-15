@@ -269,9 +269,14 @@ body {
 
 /* Стили для контейнера кнопок выбора стола */
 .table-buttons {
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 10px; */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 /* Стили для кнопок стола */
@@ -860,14 +865,3 @@ input::placeholder {
   background: #f3e5f5;
 }
 
-/* Адаптивность для мобильных */
-@media (max-width: 480px) {
-  .tables-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .scheme-legend {
-    flex-direction: column;
-    align-items: center;
-  }
-}

@@ -129,6 +129,12 @@ function App() {
 
   // Загружаем бронирования при монтировании компонента
   useEffect(() => {
+    // if (selectedClub === 'Марата 56') {
+    //   setSelectedTable(3);
+    // } else if (selectedClub === 'Каменноостровский 77') {
+    //   setSelectedTable(3);
+    // }
+
     fetchBookings();
     fetchUser();
   }, [fetchBookings, fetchUser]);
@@ -635,33 +641,33 @@ function App() {
         )}
 
         <div className="table-buttons">
-        {(() => {
-          // Определяем диапазон столов в зависимости от выбранного клуба
-          let tablesRange = [];
-          if (selectedClub === 'Марата 56-58') {
-            tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
-          } else if (selectedClub === 'Каменноостровский 26-28') {
-            tablesRange = [3, 4, 5, 6, 7, 8]; // Столы с 3 по 8
-          }
-          
-          return tablesRange.map((tableNumber) => {
-            let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
-            const isDateAvailable = canUserBookMore(selectedDate);
-            isTableAvailable = isDateAvailable ? isTableAvailable : false;
+          {(() => {
+            // Определяем диапазон столов в зависимости от выбранного клуба
+            let tablesRange = [];
+            if (selectedClub === 'Марата 56-58') {
+              tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
+            } else if (selectedClub === 'Каменноостровский 26-28') {
+              tablesRange = [3, 4, 5, 6, 7, 8]; // Столы с 3 по 8
+            }
             
-            return (
-              <button
-                key={tableNumber}
-                className={`table-button ${selectedTable === tableNumber ? 'selected' : ''}`}
-                onClick={() => handleTableSelect(tableNumber)}
-                disabled={!isTableAvailable}
-              >
-                Стол {tableNumber}
-              </button>
-            );
-          });
-        })()}
-      </div>
+            return tablesRange.map((tableNumber) => {
+              let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
+              const isDateAvailable = canUserBookMore(selectedDate);
+              isTableAvailable = isDateAvailable ? isTableAvailable : false;
+              
+              return (
+                <button
+                  key={tableNumber}
+                  className={`table-button ${selectedTable === tableNumber ? 'selected' : ''}`}
+                  onClick={() => handleTableSelect(tableNumber)}
+                  disabled={!isTableAvailable}
+                >
+                  Стол {tableNumber}
+                </button>
+              );
+            });
+          })()}
+        </div>
 
         {/* <div className="table-buttons">
           {[3, 4, 5, 6].map((tableNumber) => {
