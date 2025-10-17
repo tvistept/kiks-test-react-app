@@ -526,22 +526,22 @@ function App() {
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
-                  <div className="table-type">Бронь</div>
+                  <div className="table-type">Пул</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 4</div>
-                  <div className="table-type">Бронь</div>
+                  <div className="table-type">Пул</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 5</div>
-                  <div className="table-type">Бронь</div>
+                  <div className="table-type">Пул</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 6</div>
-                  <div className="table-type">Бронь</div>
+                  <div className="table-type">Пул</div>
                 </div>
               </div>
-              <div className="scheme-legend">
+              {/* <div className="scheme-legend">
                 <div className="legend-item">
                   <div className="legend-color booking-color"></div>
                   <span>Столы для брони</span>
@@ -550,7 +550,7 @@ function App() {
                   <div className="legend-color queue-color"></div>
                   <span>Столы живой очереди</span>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
           
@@ -590,7 +590,7 @@ function App() {
                   <div className="table-type">Пул</div>
                 </div>
               </div>
-              <div className="scheme-legend">
+              {/* <div className="scheme-legend">
                 <div className="legend-item">
                   <div className="legend-color vip-color"></div>
                   <span>VIP столы</span>
@@ -607,7 +607,7 @@ function App() {
                   <div className="legend-color queue-color"></div>
                   <span>Живая очередь</span>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
@@ -668,25 +668,6 @@ function App() {
             });
           })()}
         </div>
-
-        {/* <div className="table-buttons">
-          {[3, 4, 5, 6].map((tableNumber) => {
-            let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
-            const isDateAvailable = canUserBookMore(selectedDate);
-            isTableAvailable = isDateAvailable ? isTableAvailable : false ;
-            return (
-              <button
-                key={tableNumber}
-                className={`table-button ${selectedTable === tableNumber ? 'selected' : ''}`}
-                onClick={() => handleTableSelect(tableNumber)}
-                disabled={!isTableAvailable}
-              >
-                Стол {tableNumber}
-                
-              </button>
-            );
-          })}
-        </div> */}
 
         <div className="date-buttons">
           {dates.map((date) => {
