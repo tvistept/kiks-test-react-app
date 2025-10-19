@@ -518,11 +518,11 @@ function App() {
               <div className="tables-grid">
                 <div className="table-item queue-table">
                   <div className="table-number">Стол 1</div>
-                  <div className="table-type">Живая очередь</div>
+                  <div className="table-type">Живая очередь (пул)</div>
                 </div>
                 <div className="table-item queue-table">
                   <div className="table-number">Стол 2</div>
-                  <div className="table-type">Живая очередь</div>
+                  <div className="table-type">Живая очередь (пул)</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
@@ -570,11 +570,11 @@ function App() {
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
                 <div className="table-item vip-table">
-                  <div className="table-number">Стол 4</div>
+                  <div className="table-number">DARK ROOM</div>
                   <div className="table-type">VIP (пул)</div>
                 </div>
                 <div className="table-item vip-table">
-                  <div className="table-number">Стол 5</div>
+                  <div className="table-number">WOOD ROOM</div>
                   <div className="table-type">VIP (пул)</div>
                 </div>
                 <div className="table-item pool-table">
@@ -654,7 +654,19 @@ function App() {
               let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
               const isDateAvailable = canUserBookMore(selectedDate);
               isTableAvailable = isDateAvailable ? isTableAvailable : false;
-              
+              let tableName
+              if (selectedClub == 'Каменноостровский 26-28') {
+                if (tableNumber == 4) {
+                  tableName = 'DARK ROOM'
+                } else if (tableNumber == 5) {
+                  tableName = 'WOOD ROOM'
+                } else  {
+                  tableName = `Стол ${tableNumber}`
+                }
+              } else {
+                tableName = `Стол ${tableNumber}`
+              }
+
               return (
                 <button
                   key={tableNumber}
@@ -662,7 +674,7 @@ function App() {
                   onClick={() => handleTableSelect(tableNumber)}
                   disabled={!isTableAvailable}
                 >
-                  Стол {tableNumber}
+                  {tableName}
                 </button>
               );
             });
