@@ -18,7 +18,7 @@ function App() {
   const [existingBookings, setExistingBookings] = useState([]);
   const [userBookings, setUserBookings] = useState([]);
   const [userData, setUserData] = useState({});
-  const [selectedTable, setSelectedTable] = useState(4); // Состояние для выбранного стола
+  const [selectedTable, setSelectedTable] = useState(3); // Состояние для выбранного стола
   const [selectedDate, setSelectedDate] = useState(null); // Состояние для выбранной даты
   const [openDate, setOpenDate] = useState(null); // Состояние для открытой даты (чтобы показывать слоты)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null); // Состояние для выбранного временного слота
@@ -541,16 +541,6 @@ function App() {
                   <div className="table-type">Пул</div>
                 </div>
               </div>
-              {/* <div className="scheme-legend">
-                <div className="legend-item">
-                  <div className="legend-color booking-color"></div>
-                  <span>Столы для брони</span>
-                </div>
-                <div className="legend-item">
-                  <div className="legend-color queue-color"></div>
-                  <span>Столы живой очереди</span>
-                </div>
-              </div> */}
             </div>
           )}
           
@@ -565,9 +555,9 @@ function App() {
                   <div className="table-number">Стол 2</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
-                <div className="table-item queue-table">
+                <div className="table-item pool-table">
                   <div className="table-number">Стол 3</div>
-                  <div className="table-type">Живая очередь (пул)</div>
+                  <div className="table-type">Пул</div>
                 </div>
                 <div className="table-item vip-table">
                   <div className="table-number">DARK ROOM</div>
@@ -590,42 +580,42 @@ function App() {
                   <div className="table-type">Русский бильярд</div>
                 </div>
               </div>
-              {/* <div className="scheme-legend">
-                <div className="legend-item">
-                  <div className="legend-color vip-color"></div>
-                  <span>VIP столы</span>
-                </div>
-                <div className="legend-item">
-                  <div className="legend-color pool-color"></div>
-                  <span>Столы для пула</span>
-                </div>
-                <div className="legend-item">
-                  <div className="legend-color russian-color"></div>
-                  <span>Русский бильярд</span>
-                </div>
-                <div className="legend-item">
-                  <div className="legend-color queue-color"></div>
-                  <span>Живая очередь</span>
-                </div>
-              </div> */}
             </div>
           )}
         </div>
 
         {/* Блок с информацией и ссылкой на гугл-таблицу */}
         <div className="info-block">
-          <p>
-            Салют!<br />
-            Иди в <a 
-              href="https://docs.google.com/spreadsheets/d/1xubZnVNe3ED2CmUwXWHvqtwcI62RzEbIJVKeIB8a0kM" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="google-sheet-link"
-            >
-              гугл-таблицу
-            </a>, чтобы прикинуть кий к носу!<br />
-            Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
-          </p>
+          {selectedClub === 'Марата 56-58' && (
+            <p>
+              Салют!<br />
+              Иди в <a 
+                href="https://docs.google.com/spreadsheets/d/1xubZnVNe3ED2CmUwXWHvqtwcI62RzEbIJVKeIB8a0kM" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="google-sheet-link"
+              >
+                гугл-таблицу
+              </a>, чтобы прикинуть кий к носу!<br />
+              Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
+            </p>
+          )}
+
+          {selectedClub === 'Каменноостровский 26-28' && (
+            <p>
+              Салют!<br />
+              Иди в <a 
+                href="https://docs.google.com/spreadsheets/d/1pSnfQUdNLlGPMecTYKUzBcImykpKTBARmOutdZ51YKo" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="google-sheet-link"
+              >
+                гугл-таблицу
+              </a>, чтобы прикинуть кий к носу!<br />
+              Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
+            </p>
+          )}
+          
         </div>
 
         <button className="booking-button" onClick={handleBookingButtonClick}>
@@ -647,7 +637,7 @@ function App() {
             if (selectedClub === 'Марата 56-58') {
               tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
-              tablesRange = [4, 5, 6, 7, 8]; // Столы с 3 по 8
+              tablesRange = [3, 4, 5, 6, 7, 8]; // Столы с 3 по 8
             }
             
             return tablesRange.map((tableNumber) => {
