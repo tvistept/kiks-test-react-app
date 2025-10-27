@@ -37,6 +37,11 @@ function App() {
   // Функция для обработки выбора клуба
   const handleClubSelect = (clubAddress) => {
     setSelectedClub(clubAddress);
+    if (clubAddress == 'Марата 56-58') {
+      setSelectedTable(3);
+    } else if (clubAddress == 'Каменноостровский 26-28') {
+      setSelectedTable(4);
+    }
     setClubPopupOpen(false); // Закрываем попап выбора клуба
   };
 
@@ -558,30 +563,38 @@ function App() {
                   <div className="table-number">Стол 2</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
+
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
+
                 <div className="table-item booking-table">
-                  <div className="table-number">DARK ROOM</div>
-                  <div className="table-type">VIP (пул)</div>
+                  <div className="table-number">Стол 4</div>
+                  <div className="table-type">Русский бильярд</div>
                 </div>
-                <div className="table-item booking-table">
-                  <div className="table-number">WOOD ROOM</div>
-                  <div className="table-type">VIP (пул)</div>
+
+                <div className="table-item pool-table">
+                  <div className="table-number">Стол 5</div>
+                  <div className="table-type">Пул</div>
                 </div>
+
                 <div className="table-item pool-table">
                   <div className="table-number">Стол 6</div>
                   <div className="table-type">Пул</div>
                 </div>
-                <div className="table-item pool-table">
-                  <div className="table-number">Стол 7</div>
-                  <div className="table-type">Пул</div>
-                </div>
+
                 <div className="table-item booking-table">
-                  <div className="table-number">Стол 8</div>
-                  <div className="table-type">Русский бильярд</div>
+                  <div className="table-number">WOOD ROOM</div>
+                  <div className="table-type">VIP (пул)</div>
                 </div>
+                
+                <div className="table-item booking-table">
+                  <div className="table-number">DARK ROOM</div>
+                  <div className="table-type">VIP (пул)</div>
+                </div>
+
+                
               </div>
             </div>
           )}
@@ -649,9 +662,9 @@ function App() {
               isTableAvailable = isDateAvailable ? isTableAvailable : false;
               let tableName
               if (selectedClub == 'Каменноостровский 26-28') {
-                if (tableNumber == 4) {
+                if (tableNumber == 7) {
                   tableName = 'DARK ROOM'
-                } else if (tableNumber == 5) {
+                } else if (tableNumber == 8) {
                   tableName = 'WOOD ROOM'
                 } else  {
                   tableName = `Стол ${tableNumber}`

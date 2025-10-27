@@ -273,9 +273,10 @@ body {
   justify-content: center;
   gap: 10px; */
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
   width: 100%;
+  justify-content: center;
   /* margin-bottom: 15px; */
 }
 
@@ -283,8 +284,9 @@ body {
 .table-button {
   background-color: #bae6fd; /* Цвет невыбранного стола */
   color: #333;
-  padding: 10px 20px;
+  padding: 10px 10px;
   border: none;
+  height: 55px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
