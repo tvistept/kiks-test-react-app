@@ -433,6 +433,7 @@ function App() {
         name: formData.name,
         phone: formData.phone,
         hours: parseInt(formData.hours, 10),
+        club: selectedClub,
       };
 
       // Сохраняем бронирование
