@@ -155,7 +155,7 @@ function App() {
   // Функция для генерации временных слотов с 12:00 до 02:00
   const generateTimeSlots = () => {
     const slots = [];
-    for (let hour = 12; hour <= 25; hour++) {
+    for (let hour = 14; hour <= 25; hour++) {
       const time = hour % 24; // Преобразуем 24-часовой формат
       slots.push(`${time < 10 ? '0' : ''}${time}:00`);
     }
@@ -516,11 +516,11 @@ function App() {
           {selectedClub === 'Марата 56-58' && (
             <div className="scheme-content">
               <div className="tables-grid">
-                <div className="table-item queue-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 1</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
-                <div className="table-item queue-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 2</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
@@ -547,23 +547,23 @@ function App() {
           {selectedClub === 'Каменноостровский 26-28' && (
             <div className="scheme-content">
               <div className="tables-grid">
-                <div className="table-item queue-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 1</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
-                <div className="table-item queue-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 2</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
-                <div className="table-item pool-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
                   <div className="table-type">Пул</div>
                 </div>
-                <div className="table-item vip-table">
+                <div className="table-item booking-table">
                   <div className="table-number">DARK ROOM</div>
                   <div className="table-type">VIP (пул)</div>
                 </div>
-                <div className="table-item vip-table">
+                <div className="table-item booking-table">
                   <div className="table-number">WOOD ROOM</div>
                   <div className="table-type">VIP (пул)</div>
                 </div>
@@ -575,7 +575,7 @@ function App() {
                   <div className="table-number">Стол 7</div>
                   <div className="table-type">Пул</div>
                 </div>
-                <div className="table-item russian-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 8</div>
                   <div className="table-type">Русский бильярд</div>
                 </div>
