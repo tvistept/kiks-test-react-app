@@ -474,10 +474,11 @@ function App() {
 
             <div className="club-buttons-container">
               <button 
-                className="club-button"
+                className="club-button-disabled"
+                disabled = "disabled"
                 onClick={() => handleClubSelect('Марата 56-58')}
               >
-                Марата 56-58
+                Марата 56-58 (недоступно)
               </button>
               <button 
                 className="club-button"
