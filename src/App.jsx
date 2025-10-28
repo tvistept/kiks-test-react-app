@@ -634,9 +634,10 @@ function App() {
           
         </div>
 
-        <button className="booking-button" onClick={handleBookingButtonClick}>
+        {/* Кнопка мои брони*/}
+        {/* <button className="booking-button" onClick={handleBookingButtonClick}>
           Мои брони
-        </button>
+        </button> */}
 
         {/* Подсказка */}
         {hintMessage && (
