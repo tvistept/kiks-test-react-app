@@ -67,7 +67,8 @@ function App() {
         time: booking.time.slice(0, 5),
         hours: booking.hours,
         name: booking.user_name,
-        chat_id: booking.chat_id
+        chat_id: booking.chat_id,
+        club_id: booking.club_id
       }));
       setBookings(dataToSet);
       setExistingBookings(dataToSet);
@@ -287,9 +288,16 @@ function App() {
         return false; // Слот недоступен
       }
     }
+
+    // Определяем club_id для текущего выбранного клуба
+    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
   
     // Проверяем, есть ли в existingBookings бронирование, которое пересекается с выбранным слотом
     return !existingBookings.some((booking) => {
+      if (booking.club_id !== currentClubId) {
+        return false;
+      }
+
       const bookingStart = new Date(`${booking.date}T${booking.time}`);
       const bookingEnd = new Date(bookingStart);
       bookingEnd.setHours(bookingStart.getHours() + booking.hours);
@@ -340,19 +348,28 @@ function App() {
   };
 
   const canUserBookMore = (date) => {
+    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
     // Считаем количество бронирований пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date && booking.chat_id == userChatId
-    ).length;
+    (booking) => 
+      booking.date === date && 
+      booking.chat_id == userChatId && 
+      booking.club_id === currentClubId
+  ).length;
   
     // Если бронирований меньше 2, пользователь может создать ещё одну
     return userBookingsOnDate < 2;
   };
 
   const isTableAvailableForUser = (table, date) => {
+    // Определяем club_id для текущего выбранного клуба
+    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
     // Получаем все бронирования пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date && booking.chat_id == userChatId
+      (booking) => 
+        booking.date === date && 
+        booking.chat_id == userChatId &&
+        booking.club_id === currentClubId
     );
   
     // Если у пользователя уже есть бронь на этот стол, стол недоступен
@@ -366,8 +383,13 @@ function App() {
   }, [bookings, selectedDate]);
 
   const updateHintMessage = (date) => {
+    // Определяем club_id для текущего выбранного клуба
+    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
     const userBookingsOnDate = bookings.filter(
-      (booking) => booking.date === date && booking.chat_id == userChatId
+      (booking) => 
+        booking.date === date && 
+        booking.chat_id == userChatId && 
+        booking.club_id === currentClubId
     );
   
     if (userBookingsOnDate.length === 1) {
@@ -385,7 +407,14 @@ function App() {
   };
 
   const getFirstBookingTime = (date) => {
-    const userBookingsOnDate = bookings.filter((booking) => booking.date === date && booking.chat_id == userChatId);
+    // Определяем club_id для текущего выбранного клуба
+    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
+    const userBookingsOnDate = bookings.filter((booking) => 
+      booking.date === date && 
+      booking.chat_id == userChatId && 
+      booking.club_id === currentClubId
+    );
+
     if (userBookingsOnDate.length > 0) {
       return userBookingsOnDate[0].time; // Возвращаем время первой брони
     }
