@@ -37,6 +37,9 @@ function App() {
   // Функция для обработки выбора клуба
   const handleClubSelect = (clubAddress) => {
     setSelectedClub(clubAddress);
+    setSelectedDate(null);
+    setOpenDate(null);
+    setSelectedTimeSlot(null);
     if (clubAddress == 'Марата 56-58') {
       setSelectedTable(3);
     } else if (clubAddress == 'Каменноостровский 26-28') {
@@ -145,12 +148,18 @@ function App() {
     fetchUser();
   }, [fetchBookings, fetchUser]);
 
+  // Функция для проверки, является ли день выходным (суббота или воскресенье)
+  const isWeekend = (dateString) => {
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay(); // 0 - воскресенье, 6 - суббота
+    return dayOfWeek === 0 || dayOfWeek === 6;
+  };
 
   // Функция для генерации дат на неделю вперёд
-  const generateDates = () => {
+  const generateDates = (datesCnt) => {
     const dates = [];
     const today = new Date();
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < datesCnt; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       dates.push(date.toISOString().split('T')[0]); // Формат YYYY-MM-DD
@@ -158,17 +167,22 @@ function App() {
     return dates;
   };
 
-  // Функция для генерации временных слотов с 12:00 до 02:00
-  const generateTimeSlots = () => {
+  // Функция для генерации временных слотов с учетом выходных
+  const generateTimeSlots = (date) => {
     const slots = [];
-    for (let hour = 14; hour <= 25; hour++) {
+    const startHour = isWeekend(date) ? 12 : 14; // 12:00 в выходные, 14:00 в будни
+    
+    for (let hour = startHour; hour <= 25; hour++) {
       const time = hour % 24; // Преобразуем 24-часовой формат
       slots.push(`${time < 10 ? '0' : ''}${time}:00`);
     }
     return slots;
   };
 
-  const dates = generateDates(); // Генерируем даты
+  
+
+  const dates = generateDates(7); // Генерируем даты
+  const datesSecondKiks = generateDates(21); // Генерируем даты для КИКС2
   const timeSlots = generateTimeSlots(); // Генерируем временные слоты
 
   const handleTestButtonClick = () => {
@@ -601,7 +615,7 @@ function App() {
 
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 4</div>
-                  <div className="table-type">Русский бильярд</div>
+                  <div className="table-type">Пул</div>
                 </div>
 
                 <div className="table-item pool-table">
@@ -611,7 +625,7 @@ function App() {
 
                 <div className="table-item pool-table">
                   <div className="table-number">Стол 6</div>
-                  <div className="table-type">Пул</div>
+                  <div className="table-type">Русский бильард</div>
                 </div>
 
                 <div className="table-item booking-table">
@@ -719,66 +733,77 @@ function App() {
         </div>
 
         <div className="date-buttons">
-          {dates.map((date) => {
+        {(() => {
+          // Выбираем массив дат в зависимости от клуба
+          const datesToShow = selectedClub === 'Марата 56' ? dates : datesSecondKiks;
+          
+          return datesToShow.map((date) => {
             const isDateAvailable = canUserBookMore(date);
+            // Генерируем временные слоты для конкретной даты
+            const timeSlotsForDate = generateTimeSlots(date);
+            
             return (
-            <div key={date} className="date-button-container">
-              <button
-                className={`date-button ${selectedDate === date ? 'selected' : ''}`}
-                onClick={() => handleDateSelect(date)}
-                disabled={!isDateAvailable}
-              >
-                {new Date(date).toLocaleDateString('ru-RU', {
-                  weekday: "long",
-                  day: 'numeric',
-                  month: 'long',
-                })}
-                <span className="chevron">
-                  {openDate === date ? <i className="fas fa-chevron-up"></i> : <i className="fas fa-chevron-down"></i>}
-                </span>
-              </button>
-              {!isDateAvailable && (
-                <p className="input-hint">Вы уже создали 2 брони на этот день.</p>
-              )}
-              {openDate === date && (
-                <div className="time-slots">
-                  {timeSlots.map((time) => {
-                    let isAvailable = isTimeSlotAvailable(selectedTable, selectedDate, time);
-                    const isAllAvailable = isTableAvailableForUser(selectedTable, selectedDate);
-                    isAvailable = isAllAvailable ? isAvailable : isAllAvailable;
-
-                    // Проверяем, доступен ли слот на других столах
-                    const firstBookingTime = getFirstBookingTime(selectedDate);
-                    if (firstBookingTime ) {
-                      const selectedTime = new Date(`${selectedDate}T${time}`);
-                      const firstBookingStart = new Date(`${selectedDate}T${firstBookingTime}`);
-                      const firstBookingEnd = new Date(firstBookingStart);
-                      firstBookingEnd.setHours(firstBookingStart.getHours() + 2);
-
-                      if (
-                        selectedTime < firstBookingStart ||
-                        selectedTime >= firstBookingEnd
-                      ) {
-                        isAvailable = false;
-                      }
-                    }
-
-                    return (
-                      <button
-                        key={time}
-                        className={`time-slot-button ${selectedTimeSlot === time ? 'selected' : ''}`}
-                        onClick={() => handleTimeSlotSelect(time)}
-                        disabled={!isAvailable}
-                      >
-                        {time}
-                      </button>
-                    );
+              <div key={date} className="date-button-container">
+                <button
+                  className={`date-button ${selectedDate === date ? 'selected' : ''}`}
+                  onClick={() => handleDateSelect(date)}
+                  disabled={!isDateAvailable}
+                >
+                  {new Date(date).toLocaleDateString('ru-RU', {
+                    weekday: "long",
+                    day: 'numeric',
+                    month: 'long',
                   })}
-                </div>
-              )}
-            </div>
-          )})}
-        </div>
+                  
+                  <span className="chevron">
+                    {openDate === date ? <i className="fas fa-chevron-up"></i> : <i className="fas fa-chevron-down"></i>}
+                  </span>
+                </button>
+                {!isDateAvailable && (
+                  <p className="input-hint">Вы уже создали 2 брони на этот день.</p>
+                )}
+                {openDate === date && (
+                  <div className="time-slots">
+                    {timeSlotsForDate.map((time) => {
+                      let isAvailable = isTimeSlotAvailable(selectedTable, selectedDate, time);
+                      const isAllAvailable = isTableAvailableForUser(selectedTable, selectedDate);
+                      isAvailable = isAllAvailable ? isAvailable : isAllAvailable;
+
+                      // Проверяем, доступен ли слот на других столах
+                      const firstBookingTime = getFirstBookingTime(selectedDate);
+                      if (firstBookingTime ) {
+                        const selectedTime = new Date(`${selectedDate}T${time}`);
+                        const firstBookingStart = new Date(`${selectedDate}T${firstBookingTime}`);
+                        const firstBookingEnd = new Date(firstBookingStart);
+                        firstBookingEnd.setHours(firstBookingStart.getHours() + 2);
+
+                        if (
+                          selectedTime < firstBookingStart ||
+                          selectedTime >= firstBookingEnd
+                        ) {
+                          isAvailable = false;
+                        }
+                      }
+
+                      return (
+                        <button
+                          key={time}
+                          className={`time-slot-button ${selectedTimeSlot === time ? 'selected' : ''}`}
+                          onClick={() => handleTimeSlotSelect(time)}
+                          disabled={!isAvailable}
+                        >
+                          {time}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          });
+        })()}
+      </div>
+
       </div>
 
       {/* Плавающая кнопка "Забронировать" */}
