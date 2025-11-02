@@ -5,7 +5,9 @@ import {useTelegram} from "./hooks/useTelegram";
 function App() {
   const {tg} = useTelegram();
   tg.expand();
-  const userChatId = new URLSearchParams(window.location.search).get('user_id');
+  // 🆕 Получаем user_id прямо из Telegram initData
+  const userChatId = tg.initDataUnsafe?.user?.id;
+  // const userChatId = new URLSearchParams(window.location.search).get('user_id');
   
   // Новое состояние для попапа выбора клуба
   const [isClubPopupOpen, setClubPopupOpen] = useState(true); // Открываем при старте
@@ -178,8 +180,6 @@ function App() {
     }
     return slots;
   };
-
-  
 
   const dates = generateDates(7); // Генерируем даты
   const datesSecondKiks = generateDates(21); // Генерируем даты для КИКС2
@@ -493,7 +493,9 @@ function App() {
         // setSelectedTimeSlot(null);
         // setBookingPopupOpen(false);
         // setFormData({ name: '', phone: '', hours: 1 });
+        // tg.sendData(JSON.stringify(newBooking));
         tg.sendData(JSON.stringify(newBooking));
+        tg.close();
 
         setNotification('Бронирование успешно создано!');
         setTimeout(() => setNotification(null), 3000);
