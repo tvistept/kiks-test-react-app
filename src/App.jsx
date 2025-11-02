@@ -494,6 +494,7 @@ function App() {
         // setBookingPopupOpen(false);
         // setFormData({ name: '', phone: '', hours: 1 });
         // tg.sendData(JSON.stringify(newBooking));
+        console.log('📤 Отправка данных в Telegram:', newBooking);
         tg.sendData(JSON.stringify(newBooking));
         tg.close();
 
