@@ -181,7 +181,7 @@ function App() {
 
   
 
-  const dates = generateDates(7); // Генерируем даты
+  const dates = generateDates(10); // Генерируем даты
   const datesSecondKiks = generateDates(21); // Генерируем даты для КИКС2
   const timeSlots = generateTimeSlots(); // Генерируем временные слоты
 
@@ -517,11 +517,11 @@ function App() {
 
             <div className="club-buttons-container">
               <button 
-                className="club-button-disabled"
-                disabled = "disabled"
+                className="club-button"
+                // disabled = "disabled"
                 onClick={() => handleClubSelect('Марата 56-58')}
               >
-                Марата 56-58 (недоступно)
+                Марата 56-58
               </button>
               <button 
                 className="club-button"
@@ -735,7 +735,7 @@ function App() {
         <div className="date-buttons">
         {(() => {
           // Выбираем массив дат в зависимости от клуба
-          const datesToShow = selectedClub === 'Марата 56' ? dates : datesSecondKiks;
+          const datesToShow = selectedClub === 'Марата 56-58' ? dates : datesSecondKiks;
           
           return datesToShow.map((date) => {
             const isDateAvailable = canUserBookMore(date);
