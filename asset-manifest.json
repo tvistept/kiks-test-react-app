@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/kiks-test-react-app/static/css/main.e0985501.css",
-    "main.js": "/kiks-test-react-app/static/js/main.462e972f.js",
+    "main.css": "/kiks-test-react-app/static/css/main.b5d278fb.css",
+    "main.js": "/kiks-test-react-app/static/js/main.ea7cd652.js",
     "index.html": "/kiks-test-react-app/index.html",
-    "main.e0985501.css.map": "/kiks-test-react-app/static/css/main.e0985501.css.map",
-    "main.462e972f.js.map": "/kiks-test-react-app/static/js/main.462e972f.js.map"
+    "main.b5d278fb.css.map": "/kiks-test-react-app/static/css/main.b5d278fb.css.map",
+    "main.ea7cd652.js.map": "/kiks-test-react-app/static/js/main.ea7cd652.js.map"
   },
   "entrypoints": [
-    "static/css/main.e0985501.css",
-    "static/js/main.462e972f.js"
+    "static/css/main.b5d278fb.css",
+    "static/js/main.ea7cd652.js"
   ]
 }
