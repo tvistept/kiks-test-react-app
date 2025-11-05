@@ -6,6 +6,7 @@ function App() {
   const {tg} = useTelegram();
   tg.expand();
   const userChatId = new URLSearchParams(window.location.search).get('user_id');
+  const ADMIN_USER_IDS = ['93753787', '12345678', '87654321']; // Массив ID админов
   
   // Новое состояние для попапа выбора клуба
   const [isClubPopupOpen, setClubPopupOpen] = useState(true); // Открываем при старте
@@ -179,14 +180,16 @@ function App() {
     return slots;
   };
 
-  
-
   const dates = generateDates(10); // Генерируем даты
   const datesSecondKiks = generateDates(21); // Генерируем даты для КИКС2
   const timeSlots = generateTimeSlots(); // Генерируем временные слоты
 
   const handleTestButtonClick = () => {
     let table = isTableAvailableForUser(selectedTable, selectedDate);
+  };
+
+  const isAdminUser = () => {
+    return ADMIN_USER_IDS.includes(userChatId);
   };
 
   // Обработчик открытия/закрытия попапа "Мои брони"
@@ -404,6 +407,11 @@ function App() {
   };
 
   const canUserBookMore = (date) => {
+    // Если пользователь администратор
+    if (isAdminUser()) {
+      return true;
+    }
+
     const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
     // Считаем количество бронирований пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
@@ -411,13 +419,18 @@ function App() {
       booking.date === date && 
       booking.chat_id == userChatId && 
       booking.club_id === currentClubId
-  ).length;
+    ).length;
   
     // Если бронирований меньше 2, пользователь может создать ещё одну
     return userBookingsOnDate < 2;
   };
 
   const isTableAvailableForUser = (table, date) => {
+    // Если пользователь администратор
+    if (isAdminUser()) {
+      return true;
+    }
+
     // Определяем club_id для текущего выбранного клуба
     const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
     // Получаем все бронирования пользователя на выбранную дату
@@ -439,6 +452,11 @@ function App() {
   }, [bookings, selectedDate]);
 
   const updateHintMessage = (date) => {
+    // Не показываем подсказку администраторам
+    if (isAdminUser()) {
+      setHintMessage(null);
+      return;
+    }
     // Определяем club_id для текущего выбранного клуба
     const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
     const userBookingsOnDate = bookings.filter(
@@ -463,6 +481,11 @@ function App() {
   };
 
   const getFirstBookingTime = (date) => {
+    // Если пользователь администратор, не применяем ограничения по времени
+    if (isAdminUser()) {
+      return null;
+    }
+
     // Определяем club_id для текущего выбранного клуба
     const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
     const userBookingsOnDate = bookings.filter((booking) => 
@@ -592,7 +615,12 @@ function App() {
         {selectedClub && (
           <div className="club-info-container">
             <div className="selected-club-info">
+              {isAdminUser() && (
+                <span className="admin-badge">👑</span>
+              )}
               <span className="club-name">{selectedClub}</span>
+              
+
               <button 
                 className="change-club-button"
                 onClick={handleChangeClub}

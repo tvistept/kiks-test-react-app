@@ -705,7 +705,7 @@ input::placeholder {
 .selected-club-info {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; 
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
   padding: 12px 16px;
@@ -889,3 +889,12 @@ input::placeholder {
   background:  #dea0fe;
 }
 
+.admin-badge {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 8px;
+}
