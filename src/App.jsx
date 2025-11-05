@@ -249,7 +249,9 @@ function App() {
 
   // Обработчик для поля "Имя"
   const handleNameChange = (e) => {
-    const value = e.target.value.replace(/[^A-Za-zА-Яа-я\s]/g, ''); // Оставляем только буквы и пробелы
+    const value = e.target.value
+      .replace(/[^A-Za-zА-Яа-я\s]/g, '') // Оставляем только буквы и пробелы
+      .replace(/^\s+/, ''); // Удаляем пробелы в начале
     setFormData({
       ...formData,
       name: value,
@@ -625,7 +627,7 @@ function App() {
 
                 <div className="table-item pool-table">
                   <div className="table-number">Стол 6</div>
-                  <div className="table-type">Русский бильард</div>
+                  <div className="table-type">Русский бильярд</div>
                 </div>
 
                 <div className="table-item booking-table">
