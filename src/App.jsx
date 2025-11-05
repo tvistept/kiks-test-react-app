@@ -6,7 +6,7 @@ function App() {
   const {tg} = useTelegram();
   tg.expand();
   const userChatId = new URLSearchParams(window.location.search).get('user_id');
-  const ADMIN_USER_IDS = ['93753787', '12345678', '87654321']; // Массив ID админов
+  const ADMIN_USER_IDS = ['93753787', '8299945465', '5509099068']; // Массив ID админов
   
   // Новое состояние для попапа выбора клуба
   const [isClubPopupOpen, setClubPopupOpen] = useState(true); // Открываем при старте
