@@ -287,6 +287,22 @@ function App() {
   };
 
   const isTimeSlotAvailable = (table, date, time) => {
+    // Проверяем, не прошел ли уже этот временной слот
+    const now = new Date();
+    let selectedDateTime ;
+    if (time === '00:00' || time === '01:00') {
+      const originalDate = new Date(`${date}T${time}`);
+      const nextDay = new Date(originalDate);
+      selectedDateTime = nextDay.setDate(originalDate.getDate() + 1);
+    } else {
+      selectedDateTime = new Date(`${date}T${time}`);
+    }
+    
+    // Если выбранная дата и время уже прошли, слот недоступен
+    if (selectedDateTime < now) {
+      return false;
+    }
+
     const firstBookingTime = getFirstBookingTime(date);
   
     // Если у пользователя уже есть бронь на эту дату, проверяем, доступен ли слот на других столах
@@ -361,6 +377,30 @@ function App() {
   
     // Иначе доступны оба варианта
     return [1, 2];
+  };
+
+  const getTimeSlotUnavailableReason = (table, date, time) => {
+    const now = new Date();
+    const selectedDateTime = new Date(`${date}T${time}`);
+    
+    // Проверяем, не прошел ли уже этот временной слот
+    if (selectedDateTime < now) {
+      return 'Это время уже прошло';
+    }
+    
+    // Проверяем другие причины недоступности...
+    const currentClubId = selectedClub === 'Марата 56' ? 'kiks1' : 'kiks2';
+    const conflictingBooking = existingBookings.find(booking => 
+      booking.club_id === currentClubId &&
+      booking.table === table &&
+      booking.date === date
+    );
+    
+    if (conflictingBooking) {
+      return 'Слот уже забронирован';
+    }
+    
+    return 'Слот недоступен для бронирования';
   };
 
   const canUserBookMore = (date) => {
@@ -793,6 +833,7 @@ function App() {
                           className={`time-slot-button ${selectedTimeSlot === time ? 'selected' : ''}`}
                           onClick={() => handleTimeSlotSelect(time)}
                           disabled={!isAvailable}
+                          title={!isAvailable ? getTimeSlotUnavailableReason(selectedTable, date, time) : ''}
                         >
                           {time}
                         </button>
