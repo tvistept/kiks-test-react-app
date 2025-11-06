@@ -700,12 +700,12 @@ function App() {
 
                 <div className="table-item booking-table">
                   <div className="table-number">DARK ROOM</div>
-                  <div className="table-type">VIP (пул)</div>
+                  <div className="table-type">Пул</div>
                 </div>
                 
                 <div className="table-item booking-table">
                   <div className="table-number">WOOD ROOM</div>
-                  <div className="table-type">VIP (пул)</div>
+                  <div className="table-type">Пул</div>
                 </div>
 
                 
