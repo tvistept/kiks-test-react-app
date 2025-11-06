@@ -31,6 +31,7 @@ function App() {
   });
   const [notification, setNotification] = useState(null); // Состояние для уведомления
   const [hintMessage, setHintMessage] = useState(null);
+  const [showRussianBilliardInfo, setShowRussianBilliardInfo] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -221,6 +222,13 @@ function App() {
    const handleTableSelect = (tableNumber) => {
     setSelectedTimeSlot(null);
     setSelectedTable(tableNumber);
+
+    // Показываем информационный блок для 6-го стола на Каменноостровском
+    if (selectedClub === 'Каменноостровский 26-28' && tableNumber === 6) {
+      setShowRussianBilliardInfo(true);
+    } else {
+      setShowRussianBilliardInfo(false);
+    }
   };
 
   const handleDateSelect = (date) => {
@@ -801,6 +809,17 @@ function App() {
             });
           })()}
         </div>
+
+        {/* Информационный блок для русского бильярда */}
+        {showRussianBilliardInfo && (
+          <div className="russian-billiard-info">
+            {/* <div className="info-icon">🎱</div> */}
+            <div className="info-content">
+              {/* <h4>Стол для русского бильярда</h4> */}
+              <p>Этот стол предназначен для игры в <b>русский бильярд</b>. Учитывай это при бронировании.</p>
+            </div>
+          </div>
+        )}
 
         <div className="date-buttons">
         {(() => {
