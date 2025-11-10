@@ -789,6 +789,9 @@ function App() {
                   tableName = 'DARK ROOM'
                 } else if (tableNumber == 8) {
                   tableName = 'WOOD ROOM'
+                  
+                } else if (tableNumber == 6) {
+                  tableName = 'Стол 6 RUS'
                 } else  {
                   tableName = `Стол ${tableNumber}`
                 }
