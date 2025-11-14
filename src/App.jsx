@@ -341,11 +341,30 @@ function App() {
         return false;
       }
 
-      const bookingStart = new Date(`${booking.date}T${booking.time}`);
+      // const bookingStart = new Date(`${booking.date}T${booking.time}`);
+      // const bookingEnd = new Date(bookingStart);
+      // bookingEnd.setHours(bookingStart.getHours() + booking.hours);
+  
+      // const selectedStart = new Date(`${date}T${time}`);
+      // const selectedEnd = new Date(selectedStart);
+      // selectedEnd.setHours(selectedStart.getHours() + 1); // Фиксируем 1 час для проверки доступности
+      let bookingStart
+      if ((booking.time == '00:00' || booking.time == '01:00')) {
+        bookingStart = new Date(`${booking.date}T${booking.time}`)
+        bookingStart = new Date(bookingStart.setDate(bookingStart.getDate() + 1));
+      } else {
+        bookingStart = new Date(`${booking.date}T${booking.time}`);
+      } 
       const bookingEnd = new Date(bookingStart);
       bookingEnd.setHours(bookingStart.getHours() + booking.hours);
-  
-      const selectedStart = new Date(`${date}T${time}`);
+
+      let selectedStart
+      if ((time =='00:00' || time == '01:00')) {
+        selectedStart = new Date(`${date}T${time}`)
+        selectedStart = new Date(selectedStart.setDate(selectedStart.getDate() + 1));
+      } else {
+        selectedStart = new Date(`${date}T${time}`);
+      } 
       const selectedEnd = new Date(selectedStart);
       selectedEnd.setHours(selectedStart.getHours() + 1); // Фиксируем 1 час для проверки доступности
   
