@@ -45,7 +45,7 @@ function App() {
     if (clubAddress == 'Марата 56-58') {
       setSelectedTable(3);
     } else if (clubAddress == 'Каменноостровский 26-28') {
-      setSelectedTable(4);
+      setSelectedTable(3);
     }
     setClubPopupOpen(false); // Закрываем попап выбора клуба
   };
@@ -340,14 +340,6 @@ function App() {
       if (booking.club_id !== currentClubId) {
         return false;
       }
-
-      // const bookingStart = new Date(`${booking.date}T${booking.time}`);
-      // const bookingEnd = new Date(bookingStart);
-      // bookingEnd.setHours(bookingStart.getHours() + booking.hours);
-  
-      // const selectedStart = new Date(`${date}T${time}`);
-      // const selectedEnd = new Date(selectedStart);
-      // selectedEnd.setHours(selectedStart.getHours() + 1); // Фиксируем 1 час для проверки доступности
       let bookingStart
       if ((booking.time == '00:00' || booking.time == '01:00')) {
         bookingStart = new Date(`${booking.date}T${booking.time}`)
@@ -700,6 +692,7 @@ function App() {
                   <div className="table-number">Стол 1</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
+
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 2</div>
                   <div className="table-type">Живая очередь (пул)</div>
@@ -707,7 +700,7 @@ function App() {
 
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
-                  <div className="table-type">Живая очередь (пул)</div>
+                  <div className="table-type">Пул</div>
                 </div>
 
                 <div className="table-item booking-table">
@@ -717,7 +710,7 @@ function App() {
 
                 <div className="table-item pool-table">
                   <div className="table-number">Стол 5</div>
-                  <div className="table-type">Пул</div>
+                  <div className="table-type">Живая очередь (пул)</div>
                 </div>
 
                 <div className="table-item pool-table">
@@ -795,7 +788,7 @@ function App() {
             if (selectedClub === 'Марата 56-58') {
               tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
-              tablesRange = [4, 5, 6, 7, 8]; // Столы с 3 по 8
+              tablesRange = [3, 4, 6, 7, 8]; // Столы с 3 по 8
             }
             
             return tablesRange.map((tableNumber) => {
@@ -810,7 +803,7 @@ function App() {
                   tableName = 'WOOD ROOM'
                   
                 } else if (tableNumber == 6) {
-                  tableName = 'Стол 6 RUS'
+                  tableName = 'Русский бильярд'
                 } else  {
                   tableName = `Стол ${tableNumber}`
                 }
@@ -912,10 +905,11 @@ function App() {
                 )}
               </div>
             );
+            
           });
+          
         })()}
-      </div>
-
+        </div>
       </div>
 
       {/* Плавающая кнопка "Забронировать" */}
@@ -1004,11 +998,28 @@ function App() {
               </button>
             </div>
 
-            <div className="booking-info">
-              <p><strong>Стол:</strong> {selectedTable}</p>
-              <p><strong>Дата:</strong> {selectedDate}</p>
-              <p><strong>Время:</strong> {selectedTimeSlot}</p>
-            </div>
+            {(() => {
+              // Определяем диапазон столов в зависимости от выбранного клуба
+              let tableName = selectedTable;
+              if (selectedClub === 'Каменноостровский 26-28') {
+                if (selectedTable == 6) {
+                  tableName = 'Русский бильярд'
+                } else if (selectedTable == 7) {
+                  tableName = 'DARK ROOM'
+                } else if (selectedTable == 8) {
+                  tableName = 'WOOD ROOM'
+                }
+              }
+              
+             return (
+                  <div className="booking-info">
+                    <p><strong>Стол:</strong> {tableName}</p>
+                    <p><strong>Дата:</strong> {selectedDate}</p>
+                    <p><strong>Время:</strong> {selectedTimeSlot}</p>
+                  </div>
+                );
+            })()}
+            
 
             <form className="booking-form">
               <div className="form-group">
