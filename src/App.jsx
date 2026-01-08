@@ -158,6 +158,15 @@ function App() {
     return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString);
   };
 
+  const parseTime = (timeString) => {
+    let trimedTime = parseInt(timeString.slice(0, 2))
+    if (trimedTime < 12) {
+      trimedTime = trimedTime + 24
+    }
+    return trimedTime
+  }
+
+
   // Функция для генерации дат на неделю вперёд
   const generateDates = (datesCnt) => {
     const dates = [];
@@ -372,7 +381,7 @@ function App() {
 
   const getAvailableHours = (table, date, time) => {
     const firstBookingTime = getFirstBookingTime(date);
-  
+ 
     // Если это не тот же стол, что и первая бронь, и есть ограничение по времени
     if (firstBookingTime ) {
       const selectedTime = new Date(`${date}T${time}`);
@@ -398,6 +407,30 @@ function App() {
       return [1]; // Только 1 час
     }
   
+    let parsedSelectedTime = parseTime(time)
+    // Доступность для вип столов
+    if (table == 7 || table == 8 ) {
+      let filteredBookings = existingBookings.filter(elem => {
+        return elem.date == date && elem.table == table && elem.club_id == 'kiks2' && parseTime(elem.time) > parseTime(time)  
+      }).map(elem => {
+        // return elem.time
+        let trimedTime = parseInt(elem.time.slice(0, 2))
+        if (trimedTime < 12) {
+          trimedTime = trimedTime + 24
+        } 
+        return trimedTime
+      }).sort((a, b) => a - b);
+
+      if (filteredBookings.length > 0 ) {
+        
+        let availableHours = filteredBookings[0] - parsedSelectedTime;
+        let arr = Array.from({ length: availableHours }, (_, i) => i + 1);
+        return arr
+      } else {
+        return Array.from({ length: 26 - parsedSelectedTime}, (_, i) => i + 1);
+      } 
+    }
+
     // Иначе доступны оба варианта
     return [1, 2];
   };
@@ -522,8 +555,6 @@ function App() {
 
   const handleMainBookButtonClick = async (time) => {
     setBookingPopupOpen(true); // Открываем попап бронирования
-    console.log(userChatId);
-    console.log(userData);
     if (userData) {
       // Подставляем данные пользователя в форму
       setFormData({
@@ -769,11 +800,6 @@ function App() {
           
         </div>
 
-        {/* Кнопка мои брони*/}
-        {/* <button className="booking-button" onClick={handleBookingButtonClick}>
-          Мои брони
-        </button> */}
-
         {/* Подсказка */}
         {hintMessage && (
           <div className="hint-message">
@@ -781,7 +807,8 @@ function App() {
             <p>{hintMessage}</p>
           </div>
         )}
-
+        
+        {/* Кнопки столов*/}
         <div className="table-buttons">
           {(() => {
             // Определяем диапазон столов в зависимости от выбранного клуба
@@ -837,6 +864,7 @@ function App() {
           </div>
         )}
 
+        {/* Кнопки дат*/}
         <div className="date-buttons">
         {(() => {
           // Выбираем массив дат в зависимости от клуба
@@ -1020,10 +1048,9 @@ function App() {
                   </div>
                 );
             })()}
-            
 
             <form className="booking-form">
-              <div className="form-group">
+              <div className="form-group name-input" >
                 <label htmlFor="name">Имя:</label>
                 <input
                   type="text"
@@ -1039,7 +1066,7 @@ function App() {
                  <p className="input-hint">только буквы и пробелы (максимум 30 символов)</p>
               </div>
 
-              <div className="form-group">
+              <div className="form-group phone-input" >
                 <label htmlFor="phone">Телефон:</label>
                 <input
                   type="tel"
@@ -1055,7 +1082,7 @@ function App() {
                 <p className="input-hint">только цифры (максимум 11 символов)</p>
               </div>
 
-              <div className="form-group">
+              <div className="form-group hours-input">
                 <label htmlFor="hours">Количество часов:</label>
                 <select
                   id="hours"
@@ -1066,7 +1093,7 @@ function App() {
                 >
                   {getAvailableHours(selectedTable, selectedDate, selectedTimeSlot).map((hour) => (
                     <option key={hour} value={hour}>
-                      {hour} час{hour > 1 ? 'а' : ''}
+                      {hour} час{(hour >= 5 || hour == 0) ? 'ов' : (hour > 1 ? 'а' : '')}
                     </option>
                   ))}
                 </select>
