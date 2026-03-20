@@ -628,6 +628,16 @@ function App() {
         <div className="popup-overlay">
           <div className="club-popup-content">
             <div className="popup-header">
+              <h2>Внимание!</h2>
+            </div>
+            <div className="popup-header">  
+              Бот заболел.<br></br>
+              Просим прощения за доставленные неудобства. 
+              <br></br>Бронь осуществляется по номерам телефона:
+              <br></br>+7 (966) 759-33-15 Кикс Каменоостровский
+              <br></br>+7 (992) 195-34-69 Кикс Марата
+            </div>
+            {/* <div className="popup-header">
               <h2>Где хочешь играть?</h2>
             </div>
 
@@ -645,7 +655,7 @@ function App() {
               >
                 Каменноостровский 26-28
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
