@@ -36,6 +36,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const holidaysArray = ['2026-01-02', '2026-01-03', '2026-01-04', '2026-01-05', '2026-01-06', '2026-01-07', '2026-01-08', '2026-01-09', '2026-01-10', '2026-03-09'];
+  const API_BASE_URL = 'https://kiks.space:5000/api';
 
   // Функция для обработки выбора клуба
   const handleClubSelect = (clubAddress) => {
@@ -61,7 +62,7 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://kiks-app.ru:5000/api/bookings'); 
+      const response = await fetch(`${API_BASE_URL}/bookings`); 
       if (!response.ok) {
         throw new Error('Ошибка загрузки бронирований');
       }
@@ -92,7 +93,7 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://kiks-app.ru:5000/api/get-user?chat_id=${userChatId}`);
+      const response = await fetch(`${API_BASE_URL}/get-user?chat_id=${userChatId}`);
       if (!response.ok) {
         throw new Error('Ошибка загрузки пользователя');
       }
@@ -111,7 +112,7 @@ function App() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://kiks-app.ru:5000/api/bookings/${bookingId}?chat_id=${userChatId}`, {
+      const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}?chat_id=${userChatId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -628,17 +629,6 @@ function App() {
         <div className="popup-overlay">
           <div className="club-popup-content">
             <div className="popup-header">
-              <h2>Внимание!</h2>
-            </div>
-            <div className="popup-header">  
-              Бот заболел.<br></br>
-              Бронь осуществляется в чате с ботом.
-              {/* Просим прощения за доставленные неудобства. 
-              <br></br>Бронь осуществляется по номерам телефона:
-              <br></br>+7 (966) 759-33-15 Кикс Каменоостровский
-              <br></br>+7 (992) 195-34-69 Кикс Марата */}
-            </div>
-            {/* <div className="popup-header">
               <h2>Где хочешь играть?</h2>
             </div>
 
@@ -656,7 +646,7 @@ function App() {
               >
                 Каменноостровский 26-28
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
       )}
