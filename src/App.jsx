@@ -698,12 +698,15 @@ function App() {
               >
                 Каменноостровский 26-28
               </button>
-              <button 
-                className="club-button"
-                onClick={() => handleClubSelect('Севкабель')}
-              >
-                Севкабель
-              </button>
+              {isAdminUser() && (
+                <button 
+                  className="club-button"
+                  onClick={() => handleClubSelect('Севкабель')}
+                >
+                  Севкабель
+                </button>
+              )}
+              
             </div>
           </div>
         </div>
