@@ -62,8 +62,8 @@ function App() {
     } else if (clubAddress == 'Каменноостровский 26-28') {
       setSelectedTable(3);
     }
-    else if (clubAddress == 'Севкабель порт') {
-      setSelectedTable(3);
+    else if (clubAddress == 'Севкабель') {
+      setSelectedTable(2);
     }
     setClubPopupOpen(false); // Закрываем попап выбора клуба
   };
@@ -700,9 +700,9 @@ function App() {
               </button>
               <button 
                 className="club-button"
-                onClick={() => handleClubSelect('Севкабель порт')}
+                onClick={() => handleClubSelect('Севкабель')}
               >
-                Севкабель порт
+                Севкабель
               </button>
             </div>
           </div>
@@ -824,7 +824,7 @@ function App() {
             </div>
           )}
 
-          {selectedClub === 'Севкабель порт' && (
+          {selectedClub === 'Севкабель' && (
             <div className="scheme-content">
               <div className="tables-grid">
                 <div className="table-item booking-table">
@@ -833,7 +833,7 @@ function App() {
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 2</div>
-                  <div className="table-type">Живая очередь (пул)</div>
+                  <div className="table-type">Пул</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
@@ -880,7 +880,7 @@ function App() {
             </p>
           )}
 
-          {selectedClub === 'Севкабель порт' && (
+          {selectedClub === 'Севкабель' && (
             <p>
               Салют!<br />
               Иди в <a 
@@ -914,8 +914,8 @@ function App() {
               tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
               tablesRange = [3, 4, 6, 7, 8]; // Столы с 3 по 8
-            } else if (selectedClub === 'Севкабель порт') {
-              tablesRange = [3, 4 ]; // Столы с 3 по 4
+            } else if (selectedClub === 'Севкабель') {
+              tablesRange = [2, 3, 4 ]; // Столы с 3 по 4
             }
             
             return tablesRange.map((tableNumber) => {
