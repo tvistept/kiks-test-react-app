@@ -62,6 +62,9 @@ function App() {
     } else if (clubAddress == 'Каменноостровский 26-28') {
       setSelectedTable(3);
     }
+    else if (clubAddress == 'Севкабель порт') {
+      setSelectedTable(3);
+    }
     setClubPopupOpen(false); // Закрываем попап выбора клуба
   };
 
@@ -155,12 +158,6 @@ function App() {
 
   // Загружаем бронирования при монтировании компонента
   useEffect(() => {
-    // if (selectedClub === 'Марата 56') {
-    //   setSelectedTable(3);
-    // } else if (selectedClub === 'Каменноостровский 77') {
-    //   setSelectedTable(3);
-    // }
-
     fetchBookings();
     fetchUser();
   }, [fetchBookings, fetchUser]);
@@ -179,7 +176,6 @@ function App() {
     }
     return trimedTime
   }
-
 
   // Функция для генерации дат на неделю вперёд
   const generateDates = (datesCnt) => {
@@ -242,8 +238,8 @@ function App() {
     }
   };
 
-   // Обработчик выбора стола
-   const handleTableSelect = (tableNumber) => {
+  // Обработчик выбора стола
+  const handleTableSelect = (tableNumber) => {
     setSelectedTimeSlot(null);
     setSelectedTable(tableNumber);
 
@@ -357,7 +353,14 @@ function App() {
     }
 
     // Определяем club_id для текущего выбранного клуба
-    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
+    let currentClubId
+    if (selectedClub === 'Марата 56-58') {
+      currentClubId =  'kiks1'
+    } else if (selectedClub === 'Каменноостровский 26-28') {
+      currentClubId = 'kiks2'
+    } else {
+      currentClubId = 'kiks3'
+    }
   
     // Проверяем, есть ли в existingBookings бронирование, которое пересекается с выбранным слотом
     return !existingBookings.some((booking) => {
@@ -459,7 +462,14 @@ function App() {
     }
     
     // Проверяем другие причины недоступности...
-    const currentClubId = selectedClub === 'Марата 56' ? 'kiks1' : 'kiks2';
+    let currentClubId
+    if (selectedClub === 'Марата 56-58') {
+      currentClubId =  'kiks1'
+    } else if (selectedClub === 'Каменноостровский 26-28') {
+      currentClubId = 'kiks2'
+    } else {
+      currentClubId = 'kiks3'
+    }
     const conflictingBooking = existingBookings.find(booking => 
       booking.club_id === currentClubId &&
       booking.table === table &&
@@ -479,7 +489,14 @@ function App() {
       return true;
     }
 
-    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
+    let currentClubId
+    if (selectedClub === 'Марата 56-58') {
+      currentClubId =  'kiks1'
+    } else if (selectedClub === 'Каменноостровский 26-28') {
+      currentClubId = 'kiks2'
+    } else {
+      currentClubId = 'kiks3'
+    }
     // Считаем количество бронирований пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
     (booking) => 
@@ -499,7 +516,14 @@ function App() {
     }
 
     // Определяем club_id для текущего выбранного клуба
-    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
+    let currentClubId
+    if (selectedClub === 'Марата 56-58') {
+      currentClubId =  'kiks1'
+    } else if (selectedClub === 'Каменноостровский 26-28') {
+      currentClubId = 'kiks2'
+    } else {
+      currentClubId = 'kiks3'
+    }
     // Получаем все бронирования пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
       (booking) => 
@@ -525,7 +549,14 @@ function App() {
       return;
     }
     // Определяем club_id для текущего выбранного клуба
-    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
+    let currentClubId
+    if (selectedClub === 'Марата 56-58') {
+      currentClubId =  'kiks1'
+    } else if (selectedClub === 'Каменноостровский 26-28') {
+      currentClubId = 'kiks2'
+    } else {
+      currentClubId = 'kiks3'
+    }
     const userBookingsOnDate = bookings.filter(
       (booking) => 
         booking.date === date && 
@@ -554,7 +585,15 @@ function App() {
     }
 
     // Определяем club_id для текущего выбранного клуба
-    const currentClubId = selectedClub === 'Марата 56-58' ? 'kiks1' : 'kiks2';
+    let currentClubId
+    if (selectedClub === 'Марата 56-58') {
+      currentClubId =  'kiks1'
+    } else if (selectedClub === 'Каменноостровский 26-28') {
+      currentClubId = 'kiks2'
+    } else {
+      currentClubId = 'kiks3'
+    }
+
     const userBookingsOnDate = bookings.filter((booking) => 
       booking.date === date && 
       booking.chat_id == userChatId && 
@@ -658,6 +697,12 @@ function App() {
                 onClick={() => handleClubSelect('Каменноостровский 26-28')}
               >
                 Каменноостровский 26-28
+              </button>
+              <button 
+                className="club-button"
+                onClick={() => handleClubSelect('Севкабель порт')}
+              >
+                Севкабель порт
               </button>
             </div>
           </div>
@@ -778,6 +823,29 @@ function App() {
               </div>
             </div>
           )}
+
+          {selectedClub === 'Севкабель порт' && (
+            <div className="scheme-content">
+              <div className="tables-grid">
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 1</div>
+                  <div className="table-type">Живая очередь (пул)</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 2</div>
+                  <div className="table-type">Живая очередь (пул)</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 3</div>
+                  <div className="table-type">Пул</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 4</div>
+                  <div className="table-type">Пул</div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Блок с информацией и ссылкой на гугл-таблицу */}
@@ -811,6 +879,21 @@ function App() {
               Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
             </p>
           )}
+
+          {selectedClub === 'Севкабель порт' && (
+            <p>
+              Салют!<br />
+              Иди в <a 
+                href="https://docs.google.com/spreadsheets/d/1_JC03Ev-OvUXufVjCPyJbRMiMnc53CAsJS4Ko84njiU" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="google-sheet-link"
+              >
+                гугл-таблицу
+              </a>, чтобы прикинуть кий к носу!<br />
+              Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
+            </p>
+          )}
           
         </div>
 
@@ -831,6 +914,8 @@ function App() {
               tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
               tablesRange = [3, 4, 6, 7, 8]; // Столы с 3 по 8
+            } else if (selectedClub === 'Севкабель порт') {
+              tablesRange = [3, 4 ]; // Столы с 3 по 4
             }
             
             return tablesRange.map((tableNumber) => {
@@ -882,7 +967,7 @@ function App() {
         <div className="date-buttons">
         {(() => {
           // Выбираем массив дат в зависимости от клуба
-          const datesToShow = selectedClub === 'Марата 56-58' ? dates : datesSecondKiks;
+          let datesToShow = selectedClub === 'Каменноостровский 26-28' ?  datesSecondKiks : dates;
           
           return datesToShow.map((date) => {
             const isDateAvailable = canUserBookMore(date);
