@@ -49,7 +49,7 @@ function App() {
       '2026-05-01',
       '2026-05-11'
     ];
-  const API_BASE_URL = 'https://kiks.space:5000/api';
+  const API_BASE_URL = 'https://kiks.space:8443/api';
 
   // Функция для обработки выбора клуба
   const handleClubSelect = (clubAddress) => {
