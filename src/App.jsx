@@ -244,11 +244,11 @@ function App() {
     setSelectedTable(tableNumber);
 
     // Показываем информационный блок для 6-го стола на Каменноостровском
-    if (selectedClub === 'Каменноостровский 26-28' && tableNumber === 6) {
-      setShowRussianBilliardInfo(true);
-    } else {
-      setShowRussianBilliardInfo(false);
-    }
+    // if (selectedClub === 'Каменноостровский 26-28' && tableNumber === 6) {
+    //   setShowRussianBilliardInfo(true);
+    // } else {
+    //   setShowRussianBilliardInfo(false);
+    // }
   };
 
   const handleDateSelect = (date) => {
@@ -809,7 +809,7 @@ function App() {
 
                 <div className="table-item pool-table">
                   <div className="table-number">Стол 6</div>
-                  <div className="table-type">Русский бильярд</div>
+                  <div className="table-type">Пул</div>
                 </div>
 
                 <div className="table-item booking-table">
@@ -931,9 +931,8 @@ function App() {
                   tableName = 'DARK ROOM'
                 } else if (tableNumber == 8) {
                   tableName = 'WOOD ROOM'
-                  
-                } else if (tableNumber == 6) {
-                  tableName = 'Русский бильярд'
+                // } else if (tableNumber == 6) {
+                //   tableName = 'Русский бильярд'
                 } else  {
                   tableName = `Стол ${tableNumber}`
                 }
@@ -1133,9 +1132,9 @@ function App() {
               // Определяем диапазон столов в зависимости от выбранного клуба
               let tableName = selectedTable;
               if (selectedClub === 'Каменноостровский 26-28') {
-                if (selectedTable == 6) {
+                /*if (selectedTable == 6) {
                   tableName = 'Русский бильярд'
-                } else if (selectedTable == 7) {
+                } else */if (selectedTable == 7) {
                   tableName = 'DARK ROOM'
                 } else if (selectedTable == 8) {
                   tableName = 'WOOD ROOM'
