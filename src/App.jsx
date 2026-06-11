@@ -64,7 +64,7 @@ function App() {
       setSelectedTable(3);
     }
     else if (clubAddress == 'Севкабель') {
-      setSelectedTable(2);
+      setSelectedTable(3);
     }
     setClubPopupOpen(false); // Закрываем попап выбора клуба
   };
@@ -264,11 +264,6 @@ function App() {
     updateHintMessage(date);
   };
 
-  // const handleTimeSlotSelect = (time) => {
-  //   setSelectedTimeSlot(time); // Устанавливаем выбранный временной слот
-  //   // setBookingPopupOpen(true); // Открываем попап бронирования
-  // };
-
   const handleTimeSlotSelect = (time) => {
     setSelectedTimeSlot(time);
     // Обновляем количество часов в зависимости от выбранного слота
@@ -306,13 +301,6 @@ function App() {
     });
   };
 
-  // const handleFormChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
   const closeBookingPopup = () => {
     setBookingPopupOpen(false);
     setSelectedTimeSlot(null); // Сбрасываем выбранный временной слот
@@ -834,7 +822,7 @@ function App() {
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 2</div>
-                  <div className="table-type">Пул</div>
+                  <div className="table-type">Живая очередь (пул)</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
@@ -842,6 +830,14 @@ function App() {
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 4</div>
+                  <div className="table-type">Пул</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 5</div>
+                  <div className="table-type">Пул</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 6</div>
                   <div className="table-type">Пул</div>
                 </div>
               </div>
@@ -914,9 +910,9 @@ function App() {
             if (selectedClub === 'Марата 56-58') {
               tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
-              tablesRange = [3, 4, 6, 7, 8]; // Столы с 3 по 8
+              tablesRange = [3, 4, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
-              tablesRange = [2, 3, 4 ]; // Столы с 3 по 4
+              tablesRange = [3, 4, 5, 6 ]; 
             }
             
             return tablesRange.map((tableNumber) => {
