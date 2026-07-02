@@ -36,20 +36,20 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const holidaysArray = [
-      '2026-01-02', 
-      '2026-01-03', 
-      '2026-01-04', 
-      '2026-01-05', 
-      '2026-01-06', 
-      '2026-01-07', 
-      '2026-01-08', 
-      '2026-01-09', 
-      '2026-01-10', 
-      '2026-03-09',
-      '2026-05-01',
-      '2026-05-11',
-      '2026-06-12'
-    ];
+    '2026-01-02', 
+    '2026-01-03', 
+    '2026-01-04', 
+    '2026-01-05', 
+    '2026-01-06', 
+    '2026-01-07', 
+    '2026-01-08', 
+    '2026-01-09', 
+    '2026-01-10', 
+    '2026-03-09',
+    '2026-05-01',
+    '2026-05-11',
+    '2026-06-12'
+  ];
   const API_BASE_URL = 'https://kiks.space:8443/api';
 
   // Функция для обработки выбора клуба
@@ -167,7 +167,7 @@ function App() {
   const isWeekend = (dateString) => {
     const date = new Date(dateString);
     const dayOfWeek = date.getDay(); // 0 - воскресенье, 6 - суббота
-    return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString);
+    return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString) || (selectedClub == 'Севкабель' && dayOfWeek === 5); // Также считаем пятницу выходным для Севкабеля
   };
 
   const parseTime = (timeString) => {
