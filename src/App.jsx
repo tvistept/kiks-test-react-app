@@ -167,7 +167,8 @@ function App() {
   const isWeekend = (dateString) => {
     const date = new Date(dateString);
     const dayOfWeek = date.getDay(); // 0 - воскресенье, 6 - суббота
-    return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString) || (selectedClub == 'Севкабель' && dayOfWeek === 5); // Также считаем пятницу выходным для Севкабеля
+    // return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString) || (selectedClub == 'Севкабель' && dayOfWeek === 5); // Также считаем пятницу выходным для Севкабеля
+    return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString);
   };
 
   const parseTime = (timeString) => {
