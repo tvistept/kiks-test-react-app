@@ -762,6 +762,10 @@ function App() {
                   <div className="table-number">Стол 6</div>
                   <div className="table-type">Пул</div>
                 </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 7</div>
+                  <div className="table-type">Пул</div>
+                </div>
               </div>
             </div>
           )}
@@ -909,7 +913,7 @@ function App() {
             // Определяем диапазон столов в зависимости от выбранного клуба
             let tablesRange = [];
             if (selectedClub === 'Марата 56-58') {
-              tablesRange = [3, 4, 5, 6]; // Столы с 3 по 6
+              tablesRange = [3, 4, 5, 6, 7]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
               tablesRange = [3, 4, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
