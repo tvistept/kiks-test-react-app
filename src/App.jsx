@@ -416,7 +416,7 @@ function App() {
   
     let parsedSelectedTime = parseTime(time)
     // Доступность для вип столов
-    if (table == 7 || table == 8 ) {
+    if ((table == 7 || table == 8) && selectedClub === 'Каменноостровский 26-28'  ) {
       let filteredBookings = existingBookings.filter(elem => {
         return elem.date == date && elem.table == table && elem.club_id == 'kiks2' && parseTime(elem.time) > parseTime(time)  
       }).map(elem => {
