@@ -66,6 +66,9 @@ function App() {
     else if (clubAddress == 'Севкабель') {
       setSelectedTable(3);
     }
+    else if (clubAddress == 'NeKiks') {
+      setSelectedTable(3);
+    }
     setClubPopupOpen(false); // Закрываем попап выбора клуба
   };
 
@@ -348,8 +351,10 @@ function App() {
       currentClubId =  'kiks1'
     } else if (selectedClub === 'Каменноостровский 26-28') {
       currentClubId = 'kiks2'
-    } else {
+    } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
+    } else if (selectedClub === 'NeKiks') {
+      currentClubId = 'kiks4'
     }
   
     // Проверяем, есть ли в existingBookings бронирование, которое пересекается с выбранным слотом
@@ -457,9 +462,12 @@ function App() {
       currentClubId =  'kiks1'
     } else if (selectedClub === 'Каменноостровский 26-28') {
       currentClubId = 'kiks2'
-    } else {
+    } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
+    } else if (selectedClub === 'NeKiks') {
+      currentClubId = 'kiks4'
     }
+
     const conflictingBooking = existingBookings.find(booking => 
       booking.club_id === currentClubId &&
       booking.table === table &&
@@ -484,9 +492,12 @@ function App() {
       currentClubId =  'kiks1'
     } else if (selectedClub === 'Каменноостровский 26-28') {
       currentClubId = 'kiks2'
-    } else {
+    } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
+    } else if (selectedClub === 'NeKiks') {
+      currentClubId = 'kiks4'
     }
+
     // Считаем количество бронирований пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
     (booking) => 
@@ -511,9 +522,12 @@ function App() {
       currentClubId =  'kiks1'
     } else if (selectedClub === 'Каменноостровский 26-28') {
       currentClubId = 'kiks2'
-    } else {
+    } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
+    } else if (selectedClub === 'NeKiks') {
+      currentClubId = 'kiks4'
     }
+
     // Получаем все бронирования пользователя на выбранную дату
     const userBookingsOnDate = bookings.filter(
       (booking) => 
@@ -544,9 +558,12 @@ function App() {
       currentClubId =  'kiks1'
     } else if (selectedClub === 'Каменноостровский 26-28') {
       currentClubId = 'kiks2'
-    } else {
+    } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
+    } else if (selectedClub === 'NeKiks') {
+      currentClubId = 'kiks4'
     }
+
     const userBookingsOnDate = bookings.filter(
       (booking) => 
         booking.date === date && 
@@ -580,8 +597,10 @@ function App() {
       currentClubId =  'kiks1'
     } else if (selectedClub === 'Каменноостровский 26-28') {
       currentClubId = 'kiks2'
-    } else {
+    } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
+    } else if (selectedClub === 'NeKiks') {
+      currentClubId = 'kiks4'
     }
 
     const userBookingsOnDate = bookings.filter((booking) => 
@@ -682,18 +701,29 @@ function App() {
               >
                 Марата 56-58
               </button>
+
               <button 
                 className="club-button"
                 onClick={() => handleClubSelect('Каменноостровский 26-28')}
               >
                 Каменноостровский 26-28
               </button>
+
               <button 
                 className="club-button"
                 onClick={() => handleClubSelect('Севкабель')}
               >
                 Севкабель
               </button>
+
+               {isAdminUser() && (
+                <button 
+                  className="club-button-alter"
+                  onClick={() => handleClubSelect('NeKiks')}
+                >
+                  NeKiks
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -848,6 +878,33 @@ function App() {
               </div>
             </div>
           )}
+
+          {selectedClub === 'NeKiks' && (
+            <div className="scheme-content">
+              <div className="tables-grid">
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 1</div>
+                  <div className="table-type">Живая очередь (пул)</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 2</div>
+                  <div className="table-type">Живая очередь (пул)</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 3</div>
+                  <div className="table-type">Пул</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 4</div>
+                  <div className="table-type">Пул</div>
+                </div>
+                <div className="table-item booking-table">
+                  <div className="table-number">Стол 5</div>
+                  <div className="table-type">Пул</div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Блок с информацией и ссылкой на гугл-таблицу */}
@@ -896,6 +953,21 @@ function App() {
               Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
             </p>
           )}
+
+          {selectedClub === 'NeKiks' && (
+            <p>
+              Салют!<br />
+              Иди в <a 
+                href="https://docs.google.com/spreadsheets/d/1Hux_RVoxUE5OFTISRiNVwEiM-4MmMOow2eDfJR5A8yk"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="google-sheet-link"
+              >
+                гугл-таблицу
+              </a>, чтобы прикинуть кий к носу!<br />
+              Есть подходящий слот — возвращайся сюда и бронируй нужный слот. Иначе можешь попытать удачу в живой очереди на месте.
+            </p>
+          )}
           
         </div>
 
@@ -918,6 +990,8 @@ function App() {
               tablesRange = [3, 4, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
               tablesRange = [3, 4, 5, 6 ]; 
+            } else if (selectedClub === 'NeKiks') {
+              tablesRange = [3, 4, 5 ]; 
             }
             
             return tablesRange.map((tableNumber) => {
