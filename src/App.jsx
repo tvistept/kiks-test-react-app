@@ -66,7 +66,7 @@ function App() {
     else if (clubAddress == 'Севкабель') {
       setSelectedTable(3);
     }
-    else if (clubAddress == 'Не Кикс') {
+    else if (clubAddress == 'НеКикс') {
       setSelectedTable(3);
     }
     setClubPopupOpen(false); // Закрываем попап выбора клуба
@@ -353,7 +353,7 @@ function App() {
       currentClubId = 'kiks2'
     } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
-    } else if (selectedClub === 'Не Кикс') {
+    } else if (selectedClub === 'НеКикс') {
       currentClubId = 'kiks4'
     }
   
@@ -464,7 +464,7 @@ function App() {
       currentClubId = 'kiks2'
     } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
-    } else if (selectedClub === 'Не Кикс') {
+    } else if (selectedClub === 'НеКикс') {
       currentClubId = 'kiks4'
     }
 
@@ -494,7 +494,7 @@ function App() {
       currentClubId = 'kiks2'
     } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
-    } else if (selectedClub === 'Не Кикс') {
+    } else if (selectedClub === 'НеКикс') {
       currentClubId = 'kiks4'
     }
 
@@ -524,7 +524,7 @@ function App() {
       currentClubId = 'kiks2'
     } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
-    } else if (selectedClub === 'Не Кикс') {
+    } else if (selectedClub === 'НеКикс') {
       currentClubId = 'kiks4'
     }
 
@@ -560,7 +560,7 @@ function App() {
       currentClubId = 'kiks2'
     } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
-    } else if (selectedClub === 'Не Кикс') {
+    } else if (selectedClub === 'НеКикс') {
       currentClubId = 'kiks4'
     }
 
@@ -599,7 +599,7 @@ function App() {
       currentClubId = 'kiks2'
     } else if (selectedClub === 'Севкабель') {
       currentClubId = 'kiks3'
-    } else if (selectedClub === 'Не Кикс') {
+    } else if (selectedClub === 'НеКикс') {
       currentClubId = 'kiks4'
     }
 
@@ -718,17 +718,17 @@ function App() {
 
               {/* <button 
                 className="club-button-alter"
-                onClick={() => handleClubSelect('Не Кикс')}
+                onClick={() => handleClubSelect('НеКикс')}
               >
-                Не Кикс
+                НеКикс
               </button> */}
 
                {isAdminUser() && (
                 <button 
                   className="club-button-alter"
-                  onClick={() => handleClubSelect('Не Кикс')}
+                  onClick={() => handleClubSelect('НеКикс')}
                 >
-                  Не Кикс
+                  НеКикс
                 </button>
               )}
             </div>
@@ -886,7 +886,7 @@ function App() {
             </div>
           )}
 
-          {selectedClub === 'Не Кикс' && (
+          {selectedClub === 'НеКикс' && (
             <div className="scheme-content">
               <div className="tables-grid">
                 <div className="table-item booking-table">
@@ -961,7 +961,7 @@ function App() {
             </p>
           )}
 
-          {selectedClub === 'Не Кикс' && (
+          {selectedClub === 'НеКикс' && (
             <p>
               Салют!<br />
               Иди в <a 
@@ -997,7 +997,7 @@ function App() {
               tablesRange = [3, 4, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
               tablesRange = [3, 4, 5, 6 ]; 
-            } else if (selectedClub === 'Не Кикс') {
+            } else if (selectedClub === 'НеКикс') {
               tablesRange = [3, 4, 5 ]; 
             }
             
