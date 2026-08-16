@@ -197,9 +197,14 @@ function App() {
   // Функция для генерации временных слотов с учетом выходных
   const generateTimeSlots = (date) => {
     const slots = [];
-    const startHour = isWeekend(date) ? 12 : 14; // 12:00 в выходные, 14:00 в будни
+    let startHour = isWeekend(date) ? 12 : 14; // 12:00 в выходные, 14:00 в будни
+    let endHour = 25;
+    if (selectedClub === 'НеКикс') {
+      startHour = 18
+      endHour = 29;
+    }
     
-    for (let hour = startHour; hour <= 25; hour++) {
+    for (let hour = startHour; hour <= endHour; hour++) {
       const time = hour % 24; // Преобразуем 24-часовой формат
       slots.push(`${time < 10 ? '0' : ''}${time}:00`);
     }
@@ -208,7 +213,7 @@ function App() {
 
   const dates = generateDates(10); // Генерируем даты
   const datesSecondKiks = generateDates(21); // Генерируем даты для КИКС2
-  const timeSlots = generateTimeSlots(); // Генерируем временные слоты
+  // const timeSlots = generateTimeSlots(); // Генерируем временные слоты
 
   const handleTestButtonClick = () => {
     let table = isTableAvailableForUser(selectedTable, selectedDate);
@@ -314,7 +319,7 @@ function App() {
     // Проверяем, не прошел ли уже этот временной слот
     const now = new Date();
     let selectedDateTime ;
-    if (time === '00:00' || time === '01:00') {
+    if (parseTime(time) > 23) {
       const originalDate = new Date(`${date}T${time}`);
       const nextDay = new Date(originalDate);
       selectedDateTime = nextDay.setDate(originalDate.getDate() + 1);
@@ -413,9 +418,11 @@ function App() {
   
     // Если следующий слот занят или это последний слот (01:00), доступен только 1 час
     if (
-      !isTimeSlotAvailable(table, date, nextSlotTime) ||
-      time === '01:00'
+      (!isTimeSlotAvailable(table, date, nextSlotTime) ||
+      time === '01:00') && selectedClub !== 'НеКикс'
     ) {
+      return [1]; // Только 1 час
+    } else if (selectedClub === 'НеКикс' && (!isTimeSlotAvailable(table, date, nextSlotTime) || time === '05:00')) {
       return [1]; // Только 1 час
     }
   
