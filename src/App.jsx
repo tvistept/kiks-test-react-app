@@ -839,7 +839,7 @@ function App() {
 
                 <div className="table-item pool-table">
                   <div className="table-number">Стол 5</div>
-                  <div className="table-type">Живая очередь (пул)</div>
+                  <div className="table-type">Пул</div>
                 </div>
 
                 <div className="table-item pool-table">
@@ -1001,7 +1001,7 @@ function App() {
             if (selectedClub === 'Марата 56-58') {
               tablesRange = [3, 4, 5, 6, 7]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
-              tablesRange = [3, 4, 6, 7, 8]; 
+              tablesRange = [3, 4, 5, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
               tablesRange = [3, 4, 5, 6 ]; 
             } else if (selectedClub === 'НеКикс') {
