@@ -5,6 +5,7 @@ import {useTelegram} from "./hooks/useTelegram";
 function App() {
   const {tg} = useTelegram();
   tg.expand();
+
   const userChatId = new URLSearchParams(window.location.search).get('user_id');
   const ADMIN_USER_IDS = ['93753787', '8299945465', '5509099068', '8981754042' ,'899884120']; // Массив ID админов
   
@@ -172,6 +173,22 @@ function App() {
     const dayOfWeek = date.getDay(); // 0 - воскресенье, 6 - суббота
     // return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString) || (selectedClub == 'Севкабель' && dayOfWeek === 5); // Также считаем пятницу выходным для Севкабеля
     return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString);
+  };
+
+  // Функция для проверки, попадает ли дата в специальный период для столов 1 и 2 на Марата
+  const isSpecialPeriodForMarata = (dateString) => {
+    if (!dateString) return false;
+    
+    const startDate = new Date('2026-08-24');
+    const endDate = new Date('2026-08-30');
+    const checkDate = new Date(dateString);
+    
+    // Устанавливаем время в 00:00:00 для корректного сравнения
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+    checkDate.setHours(0, 0, 0, 0);
+    
+    return checkDate >= startDate && checkDate <= endDate;
   };
 
   const parseTime = (timeString) => {
@@ -523,6 +540,12 @@ function App() {
       return true;
     }
 
+    // Для клуба на Марата проверяем специальный период для столов 1 и 2
+    if (selectedClub === 'Марата 56-58' && (table === 1 || table === 2)) {
+      // Столы 1 и 2 доступны ТОЛЬКО в специальный период
+      return isSpecialPeriodForMarata(date);
+    }
+
     // Определяем club_id для текущего выбранного клуба
     let currentClubId
     if (selectedClub === 'Марата 56-58') {
@@ -690,6 +713,8 @@ function App() {
     }
   };
 
+  
+
   return (
     <div className="App">
       {/* Попап выбора клуба */}
@@ -784,11 +809,11 @@ function App() {
               <div className="tables-grid">
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 1</div>
-                  <div className="table-type">Живая очередь (пул)</div>
+                  <div className="table-type">8 футов</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 2</div>
-                  <div className="table-type">Живая очередь (пул)</div>
+                  <div className="table-type">8 футов</div>
                 </div>
                 <div className="table-item booking-table">
                   <div className="table-number">Стол 3</div>
@@ -837,12 +862,12 @@ function App() {
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item pool-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 5</div>
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item pool-table">
+                <div className="table-item booking-table">
                   <div className="table-number">Стол 6</div>
                   <div className="table-type">Пул</div>
                 </div>
@@ -994,12 +1019,12 @@ function App() {
         )}
         
         {/* Кнопки столов*/}
-        <div className="table-buttons">
+        {/* <div className="table-buttons">
           {(() => {
             // Определяем диапазон столов в зависимости от выбранного клуба
             let tablesRange = [];
             if (selectedClub === 'Марата 56-58') {
-              tablesRange = [3, 4, 5, 6, 7]; // Столы с 3 по 6
+              tablesRange = [1,2,3, 4, 5, 6, 7]; // Столы с 3 по 6
             } else if (selectedClub === 'Каменноостровский 26-28') {
               tablesRange = [3, 4, 5, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
@@ -1036,6 +1061,64 @@ function App() {
                 >
                   {tableName}
                 </button>
+              );
+            });
+          })()}
+        </div> */}
+
+        {/* Кнопки столов*/}
+        <div className="table-buttons">
+          {(() => {
+            // Определяем диапазон столов в зависимости от выбранного клуба
+            let tablesRange = [];
+            if (selectedClub === 'Марата 56-58') {
+              tablesRange = [1, 2, 3, 4, 5, 6, 7]; // Столы с 1 по 7
+            } else if (selectedClub === 'Каменноостровский 26-28') {
+              tablesRange = [3, 4, 5, 6, 7, 8]; 
+            } else if (selectedClub === 'Севкабель') {
+              tablesRange = [3, 4, 5, 6 ]; 
+            } else if (selectedClub === 'НеКикс') {
+              tablesRange = [3, 4, 5 ]; 
+            }
+            
+            return tablesRange.map((tableNumber) => {
+              let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
+              const isDateAvailable = canUserBookMore(selectedDate);
+              isTableAvailable = isDateAvailable ? isTableAvailable : false;
+              
+              let tableName
+              if (selectedClub == 'Каменноостровский 26-28') {
+                if (tableNumber == 7) {
+                  tableName = 'DARK ROOM'
+                } else if (tableNumber == 8) {
+                  tableName = 'WOOD ROOM'
+                } else  {
+                  tableName = `Стол ${tableNumber}`
+                }
+              } else {
+                tableName = `Стол ${tableNumber}`
+              }
+
+              // Добавляем проверку для отображения подсказки
+              const isTable1Or2Marata = selectedClub === 'Марата 56-58' && (tableNumber === 1 || tableNumber === 2);
+              const isSpecialPeriod = isSpecialPeriodForMarata(selectedDate);
+              const isTableDisabled = !isTableAvailable || (isTable1Or2Marata && !isSpecialPeriod);
+
+              return (
+                <div key={tableNumber} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <button
+                    className={`table-button ${selectedTable === tableNumber ? 'selected' : ''}`}
+                    onClick={() => handleTableSelect(tableNumber)}
+                    disabled={isTableDisabled}
+                  >
+                    {tableName}
+                  </button>
+                  {isTable1Or2Marata && !isSpecialPeriod && selectedDate && (
+                    <span style={{ fontSize: '10px', color: '#888', marginTop: '4px' }}>
+                      24.08 - 30.08 
+                    </span>
+                  )}
+                </div>
               );
             });
           })()}
