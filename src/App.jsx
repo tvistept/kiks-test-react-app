@@ -229,7 +229,7 @@ function App() {
       checkDate.setHours(0, 0, 0, 0);
 
       if (checkDate >= startDate) {
-        startHour = isWeekend(date) ? 12 : 14;
+        startHour = isWeekend(date) ? 12 : 13;
         endHour = isWeekend(date) ? 25 : 22;
       } else {
         startHour = isWeekend(date) ? 12 : 14;
@@ -1000,54 +1000,6 @@ function App() {
             <p>{hintMessage}</p>
           </div>
         )}
-        
-        {/* Кнопки столов*/}
-        {/* <div className="table-buttons">
-          {(() => {
-            // Определяем диапазон столов в зависимости от выбранного клуба
-            let tablesRange = [];
-            if (selectedClub === 'Марата 56-58') {
-              tablesRange = [1,2,3, 4, 5, 6, 7]; // Столы с 3 по 6
-            } else if (selectedClub === 'Каменноостровский 26-28') {
-              tablesRange = [3, 4, 5, 6, 7, 8]; 
-            } else if (selectedClub === 'Севкабель') {
-              tablesRange = [3, 4, 5, 6 ]; 
-            } else if (selectedClub === 'НеКикс') {
-              tablesRange = [3, 4, 5 ]; 
-            }
-            
-            return tablesRange.map((tableNumber) => {
-              let isTableAvailable = isTableAvailableForUser(tableNumber, selectedDate);
-              const isDateAvailable = canUserBookMore(selectedDate);
-              isTableAvailable = isDateAvailable ? isTableAvailable : false;
-              let tableName
-              if (selectedClub == 'Каменноостровский 26-28') {
-                if (tableNumber == 7) {
-                  tableName = 'DARK ROOM'
-                } else if (tableNumber == 8) {
-                  tableName = 'WOOD ROOM'
-                // } else if (tableNumber == 6) {
-                //   tableName = 'Русский бильярд'
-                } else  {
-                  tableName = `Стол ${tableNumber}`
-                }
-              } else {
-                tableName = `Стол ${tableNumber}`
-              }
-
-              return (
-                <button
-                  key={tableNumber}
-                  className={`table-button ${selectedTable === tableNumber ? 'selected' : ''}`}
-                  onClick={() => handleTableSelect(tableNumber)}
-                  disabled={!isTableAvailable}
-                >
-                  {tableName}
-                </button>
-              );
-            });
-          })()}
-        </div> */}
 
         {/* Кнопки столов*/}
         <div className="table-buttons">
