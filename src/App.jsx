@@ -220,6 +220,22 @@ function App() {
       startHour = 18
       endHour = 29;
     }
+
+    if (selectedClub === 'Севкабель') {
+      const startDate = new Date('2026-08-24');
+      const checkDate = new Date(date);
+
+      startDate.setHours(0, 0, 0, 0);
+      checkDate.setHours(0, 0, 0, 0);
+
+      if (checkDate >= startDate) {
+        startHour = isWeekend(date) ? 12 : 14;
+        endHour = isWeekend(date) ? 25 : 22;
+      } else {
+        startHour = isWeekend(date) ? 12 : 14;
+        endHour = 25;
+      }
+    }
     
     for (let hour = startHour; hour <= endHour; hour++) {
       const time = hour % 24; // Преобразуем 24-часовой формат
@@ -231,38 +247,10 @@ function App() {
   const dates = generateDates(10); // Генерируем даты
   const datesSecondKiks = generateDates(21); // Генерируем даты для КИКС2
   // const timeSlots = generateTimeSlots(); // Генерируем временные слоты
-
-  const handleTestButtonClick = () => {
-    let table = isTableAvailableForUser(selectedTable, selectedDate);
-  };
+  
 
   const isAdminUser = () => {
     return ADMIN_USER_IDS.includes(userChatId);
-  };
-
-  // Обработчик открытия/закрытия попапа "Мои брони"
-  const handleBookingButtonClick = () => {
-    setPopupOpen(!isPopupOpen);
-  };
-
-  // Обработчик открытия попапа подтверждения удаления
-  const openDeletePopup = (id) => {
-    setBookingToDelete(id);
-    setDeletePopupOpen(true);
-  };
-
-  // Обработчик закрытия попапа подтверждения удаления
-  const closeDeletePopup = () => {
-    setBookingToDelete(null);
-    setDeletePopupOpen(false);
-  };
-
-  // Обработчик удаления бронирования
-  const handleDeleteBooking = async () => {
-    if (bookingToDelete) {
-      await deleteBooking(bookingToDelete);
-      closeDeletePopup(); // Закрываем попап после удаления
-    }
   };
 
   // Обработчик выбора стола
@@ -713,8 +701,6 @@ function App() {
     }
   };
 
-  
-
   return (
     <div className="App">
       {/* Попап выбора клуба */}
@@ -777,9 +763,6 @@ function App() {
 
       {/* Кнопки "Мои брони", Столы и даты*/}
       <div className="button-container">
-        {/* <button className="booking-button" onClick={handleTestButtonClick}>
-          test button
-        </button> */}
         {/* Блок с выбранным клубом и кнопкой смены */}
         {selectedClub && (
           <div className="club-info-container">
@@ -1127,9 +1110,7 @@ function App() {
         {/* Информационный блок для русского бильярда */}
         {showRussianBilliardInfo && (
           <div className="russian-billiard-info">
-            {/* <div className="info-icon">🎱</div> */}
             <div className="info-content">
-              {/* <h4>Стол для русского бильярда</h4> */}
               <p>Этот стол предназначен для игры в <b>русский бильярд</b>. Учитывай это при бронировании.</p>
             </div>
           </div>
@@ -1219,72 +1200,6 @@ function App() {
             Забронировать
           </button>
         </div>
-      )}
-
-      {/* Попап "Мои брони" */}
-      {isPopupOpen && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <div className="popup-header">
-              <h2>Мои брони</h2>
-              <button className="close-icon" onClick={handleBookingButtonClick}>
-                &times;
-              </button>
-            </div>
-
-            <div className="popup-body">
-              {userBookings.length === 0 ? (
-                <p className="no-bookings">У вас нет бронирований</p>
-              ) : (
-                <div className="bookings-list">
-                  {userBookings.map((booking) => (
-                    <div key={booking.id} className="booking-item">
-                      <div className="booking-details">
-                        <p><strong>Стол:</strong> {booking.table}</p>
-                        <p><strong>Дата:</strong> {booking.date}</p>
-                        <p><strong>Время:</strong> {booking.time}</p>
-                        <p><strong>Имя:</strong> {booking.name}</p>
-                        <p><strong>Часы:</strong> {booking.hours}</p>
-                      </div>
-                      <button
-                        className="delete-button"
-                        onClick={() => openDeletePopup(booking.id)}
-                      >
-                        <i className="fas fa-trash"></i> {/* Иконка мусорной корзины */}
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="popup-footer">
-              <button className="close-button" onClick={handleBookingButtonClick}>
-                Закрыть
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Попап подтверждения удаления */}
-      {isDeletePopupOpen && (
-        <div className="popup-overlay">
-        <div className="popup-confirm-content">
-          <div className="popup-header">
-            <h2>Подтверждение</h2>
-          </div>
-
-          <div className="popup-body">
-              <p className="no-bookings">Вы уверены, что хотите удалить это бронирование?</p>
-          </div>
-
-          <div className="popup-footer">
-            <button className="cancel-button" onClick={closeDeletePopup}>Отмена</button>
-            <button className="confirm-button" onClick={handleDeleteBooking}>Удалить</button>
-          </div>
-        </div>
-      </div>
       )}
 
       {/* Попап c формой бронирования */}
