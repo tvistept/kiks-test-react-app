@@ -712,43 +712,30 @@ function App() {
             </div>
 
             <div className="club-buttons-container">
-              <button 
-                className="club-button"
-                // disabled = "disabled"
-                onClick={() => handleClubSelect('Марата 56-58')}
-              >
+              <button className="club-button" onClick={() => handleClubSelect('Марата 56-58')}>
                 Марата 56-58
               </button>
 
-              <button 
-                className="club-button"
-                onClick={() => handleClubSelect('Каменноостровский 26-28')}
-              >
+              <button className="club-button" onClick={() => handleClubSelect('Каменноостровский 26-28')}>
                 Каменноостровский 26-28
               </button>
 
-              <button 
-                className="club-button"
-                onClick={() => handleClubSelect('Севкабель')}
-              >
+              <button className="club-button" onClick={() => handleClubSelect('Севкабель')} >
                 Севкабель
               </button>
 
-              {/* <button 
-                className="club-button-alter"
-                onClick={() => handleClubSelect('НеКикс')}
-              >
+              <button className="club-button-alter" onClick={() => handleClubSelect('НеКикс')}>
                 НеКикс
-              </button> */}
+              </button> 
 
-               {isAdminUser() && (
+              {/* {isAdminUser() && (
                 <button 
                   className="club-button-alter"
                   onClick={() => handleClubSelect('НеКикс')}
                 >
                   НеКикс
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         </div>
