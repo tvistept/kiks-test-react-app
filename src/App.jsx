@@ -174,6 +174,12 @@ function App() {
     return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString) || (selectedClub == 'Севкабель' && dayOfWeek === 5); // Также считаем пятницу выходным для Севкабеля;
   };
 
+  const isFriday = (dateString) => {
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay();
+    return dayOfWeek === 5
+  };
+
   // Функция для проверки, попадает ли дата в специальный период для столов 1 и 2 на Марата
   const isSpecialPeriodForMarata = (dateString) => {
     if (!dateString) return false;
@@ -222,6 +228,9 @@ function App() {
 
     if (selectedClub === 'Севкабель') {
       startHour = isWeekend(date) ? 12 : 13;
+      if (isFriday(date)) {
+        startHour = 13
+      }
       endHour = isWeekend(date) ? 25 : 22;
     }
     
