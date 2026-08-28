@@ -171,8 +171,7 @@ function App() {
   const isWeekend = (dateString) => {
     const date = new Date(dateString);
     const dayOfWeek = date.getDay(); // 0 - воскресенье, 6 - суббота
-    // return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString) || (selectedClub == 'Севкабель' && dayOfWeek === 5); // Также считаем пятницу выходным для Севкабеля
-    return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString);
+    return dayOfWeek === 0 || dayOfWeek === 6 || holidaysArray.includes(dateString) || (selectedClub == 'Севкабель' && dayOfWeek === 5); // Также считаем пятницу выходным для Севкабеля;
   };
 
   // Функция для проверки, попадает ли дата в специальный период для столов 1 и 2 на Марата
@@ -222,25 +221,15 @@ function App() {
     }
 
     if (selectedClub === 'Севкабель') {
-      const startDate = new Date('2026-08-24');
-      const checkDate = new Date(date);
-
-      startDate.setHours(0, 0, 0, 0);
-      checkDate.setHours(0, 0, 0, 0);
-
-      if (checkDate >= startDate) {
-        startHour = isWeekend(date) ? 12 : 13;
-        endHour = isWeekend(date) ? 25 : 22;
-      } else {
-        startHour = isWeekend(date) ? 12 : 14;
-        endHour = 25;
-      }
+      startHour = isWeekend(date) ? 12 : 13;
+      endHour = isWeekend(date) ? 25 : 22;
     }
     
     for (let hour = startHour; hour <= endHour; hour++) {
       const time = hour % 24; // Преобразуем 24-часовой формат
       slots.push(`${time < 10 ? '0' : ''}${time}:00`);
     }
+
     return slots;
   };
 
@@ -373,7 +362,7 @@ function App() {
         return false;
       }
       let bookingStart
-      if ((booking.time == '00:00' || booking.time == '01:00')) {
+      if ((booking.time == '00:00' || booking.time == '01:00' ) && currentClubId !== 'kiks4' || currentClubId === 'kiks4' && (booking.time == '00:00' || booking.time == '01:00' || booking.time == '02:00' || booking.time == '03:00' || booking.time == '04:00' || booking.time == '05:00')) {
         bookingStart = new Date(`${booking.date}T${booking.time}`)
         bookingStart = new Date(bookingStart.setDate(bookingStart.getDate() + 1));
       } else {
@@ -383,7 +372,7 @@ function App() {
       bookingEnd.setHours(bookingStart.getHours() + booking.hours);
 
       let selectedStart
-      if ((time =='00:00' || time == '01:00')) {
+      if ((time =='00:00' || time == '01:00') && currentClubId !== 'kiks4' || currentClubId === 'kiks4' && (time =='00:00' || time == '01:00' || time == '02:00' || time == '03:00' || time == '04:00' || time == '05:00')) {
         selectedStart = new Date(`${date}T${time}`)
         selectedStart = new Date(selectedStart.setDate(selectedStart.getDate() + 1));
       } else {
