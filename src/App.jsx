@@ -180,6 +180,12 @@ function App() {
     return dayOfWeek === 5
   };
 
+  const isSunday = (dateString) => {
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay();
+    return dayOfWeek === 0
+  };
+
   // Функция для проверки, попадает ли дата в специальный период для столов 1 и 2 на Марата
   const isSpecialPeriodForMarata = (dateString) => {
     if (!dateString) return false;
@@ -227,11 +233,12 @@ function App() {
     }
 
     if (selectedClub === 'Севкабель') {
-      startHour = isWeekend(date) ? 12 : 13;
-      if (isFriday(date)) {
-        startHour = 13
-      }
+      startHour = 13
       endHour = isWeekend(date) ? 25 : 22;
+
+      if (isSunday(date)) {
+        endHour = 22
+      }
     }
     
     for (let hour = startHour; hour <= endHour; hour++) {
@@ -257,11 +264,11 @@ function App() {
     setSelectedTable(tableNumber);
 
     // Показываем информационный блок для 6-го стола на Каменноостровском
-    // if (selectedClub === 'Каменноостровский 26-28' && tableNumber === 6) {
-    //   setShowRussianBilliardInfo(true);
-    // } else {
-    //   setShowRussianBilliardInfo(false);
-    // }
+    if (selectedClub === 'Каменноостровский 26-28' && (tableNumber === 8 || tableNumber === 5 || tableNumber === 7)) {
+      setShowRussianBilliardInfo(true);
+    } else {
+      setShowRussianBilliardInfo(false);
+    }
   };
 
   const handleDateSelect = (date) => {
@@ -830,7 +837,7 @@ function App() {
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item booking-table">
+                <div className="table-item booking-table-black-cover">
                   <div className="table-number">Стол 5</div>
                   <div className="table-type">Пул</div>
                 </div>
@@ -840,12 +847,12 @@ function App() {
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item booking-table">
+                <div className="table-item booking-table-black-cover">
                   <div className="table-number">DARK ROOM</div>
                   <div className="table-type">Пул</div>
                 </div>
                 
-                <div className="table-item booking-table">
+                <div className="table-item booking-table-blue-cover">
                   <div className="table-number">WOOD ROOM</div>
                   <div className="table-type">Пул</div>
                 </div>
@@ -1048,7 +1055,12 @@ function App() {
         {showRussianBilliardInfo && (
           <div className="russian-billiard-info">
             <div className="info-content">
-              <p>Этот стол предназначен для игры в <b>русский бильярд</b>. Учитывай это при бронировании.</p>
+              {selectedTable == 8 && (
+                <p>Этот стол с <b>синим цветом</b> сукна.</p>
+              )}
+              {(selectedTable == 5 || selectedTable == 7) && (
+                <p>Этот стол с <b>чёрным цветом</b> сукна.</p>
+              )}
             </div>
           </div>
         )}

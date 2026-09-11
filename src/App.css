@@ -1045,6 +1045,16 @@ body {
   border-color: #f9a8d4;
 }
 
+.booking-table-black-cover {
+  background: #C7D0D8;
+  border-color: #f9a8d4;
+}
+
+.booking-table-blue-cover {
+  background: #DCECFA;
+  border-color: #f9a8d4;
+}
+
 .queue-table {
   background: #fff7ed;
   border-color: #fed7aa;
