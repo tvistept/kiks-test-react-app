@@ -186,6 +186,12 @@ function App() {
     return dayOfWeek === 0
   };
 
+  const getWeekday = (dateString) => {
+    const date = new Date(dateString);
+    const dayOfWeek = date.getDay();
+    return dayOfWeek
+  };
+
   // Функция для проверки, попадает ли дата в специальный период для столов 1 и 2 на Марата
   const isSpecialPeriodForMarata = (dateString) => {
     if (!dateString) return false;
@@ -431,6 +437,8 @@ function App() {
       (!isTimeSlotAvailable(table, date, nextSlotTime) ||
       time === '01:00') && selectedClub !== 'НеКикс'
     ) {
+      return [1]; // Только 1 час
+    } else if (selectedClub === 'Севкабель' && (!isTimeSlotAvailable(table, date, nextSlotTime) || (time === '22:00' && getWeekday(date) < 5))) {
       return [1]; // Только 1 час
     } else if (selectedClub === 'НеКикс' && (!isTimeSlotAvailable(table, date, nextSlotTime) || time === '05:00')) {
       return [1]; // Только 1 час
