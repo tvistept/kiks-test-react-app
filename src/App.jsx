@@ -239,7 +239,7 @@ function App() {
     }
 
     if (selectedClub === 'Севкабель') {
-      startHour = 13
+      startHour = 14
       endHour = isWeekend(date) ? 25 : 22;
 
       if (isSunday(date)) {
