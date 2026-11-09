@@ -33,6 +33,7 @@ function App() {
   const [notification, setNotification] = useState(null); // Состояние для уведомления
   const [hintMessage, setHintMessage] = useState(null);
   const [showRussianBilliardInfo, setShowRussianBilliardInfo] = useState(false);
+  const [summaryPrice, setSummaryPrice] = useState(null); // Состояние для выбранного стола
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -77,6 +78,20 @@ function App() {
   const handleChangeClub = () => {
     setClubPopupOpen(true);
   };
+
+  const parseClubId = (selectedClubName) => {
+    let currentClubId
+    if (selectedClub === 'Марата 56-58') {
+      currentClubId =  'kiks1'
+    } else if (selectedClub === 'Каменноостровский 26-28') {
+      currentClubId = 'kiks2'
+    } else if (selectedClub === 'Севкабель') {
+      currentClubId = 'kiks3'
+    } else if (selectedClub === 'НеКикс') {
+      currentClubId = 'kiks4'
+    }
+    return currentClubId
+  }
 
   // Функция для загрузки бронирований с сервера
   const fetchBookings = useCallback(async () => {
@@ -241,7 +256,10 @@ function App() {
     if (selectedClub === 'Севкабель') {
       startHour = 14
       endHour = isWeekend(date) ? 25 : 22;
-
+      let weekday = getWeekday(date)
+      if (weekday == 6 || weekday == 5) {
+        startHour = 13
+      }
       if (isSunday(date)) {
         endHour = 22
       }
@@ -270,7 +288,7 @@ function App() {
     setSelectedTable(tableNumber);
 
     // Показываем информационный блок для 6-го стола на Каменноостровском
-    if (selectedClub === 'Каменноостровский 26-28' && (tableNumber === 8 || tableNumber === 5 || tableNumber === 7)) {
+    if (selectedClub === 'Каменноостровский 26-28' && (tableNumber === 8 || tableNumber === 7)) {
       setShowRussianBilliardInfo(true);
     } else {
       setShowRussianBilliardInfo(false);
@@ -324,6 +342,45 @@ function App() {
       ...formData,
       hours: e.target.value,
     });
+
+    handlePriceChange(e.target.value)
+  };
+
+  const handlePriceChange = (hours) => {
+    let selectedClubId = parseClubId(selectedClub)
+    let pricesArray = [
+      {clubId: "kiks1", dayPrice: 750, nightPrice: 1500},
+      {clubId: "kiks2", dayPrice: 750, nightPrice: 1500, vipDayPrice: 1000, vipNightPrice: 2000},
+      {clubId: "kiks3", dayPrice: 750, nightPrice: 1500},
+      {clubId: "kiks4", dayPrice: 1500, nightPrice: 1500},
+    ]
+
+    let selectedClubObj = pricesArray.filter( item=> item.clubId == selectedClubId )[0]
+
+    if (selectedClubId == 'kiks2' && (selectedTable == 7 || selectedTable == 8)) {
+      if (parseTime(selectedTimeSlot) >= 18 || isWeekend(selectedDate)) {
+        setSummaryPrice(selectedClubObj.vipNightPrice * hours);
+        return
+      } else {
+        let hoursBeforeNightRate = 18 - parseTime(selectedTimeSlot);
+        let hoursDayRate =  hours < hoursBeforeNightRate ? hours : hoursBeforeNightRate;
+        let hoursAfterNightRate = Math.max(0, hours - hoursBeforeNightRate);
+        setSummaryPrice(selectedClubObj.vipDayPrice * hoursDayRate + selectedClubObj.vipNightPrice * hoursAfterNightRate);
+        return
+      }
+    } else {
+      if (parseTime(selectedTimeSlot) >= 18 || isWeekend(selectedDate)) {
+        setSummaryPrice(selectedClubObj.nightPrice * hours);
+        return
+      } else if (parseTime(selectedTimeSlot) == 17 && hours == 2) {
+        setSummaryPrice(selectedClubObj.dayPrice + selectedClubObj.nightPrice);
+        return
+      } else {
+        setSummaryPrice(selectedClubObj.dayPrice * hours);
+        return
+      }
+    }
+    
   };
 
   const closeBookingPopup = () => {
@@ -647,6 +704,7 @@ function App() {
   };
 
   const handleMainBookButtonClick = async (time) => {
+    handlePriceChange(1)
     setBookingPopupOpen(true); // Открываем попап бронирования
     if (userData) {
       // Подставляем данные пользователя в форму
@@ -825,7 +883,7 @@ function App() {
           {selectedClub === 'Каменноостровский 26-28' && (
             <div className="scheme-content">
               <div className="tables-grid">
-                <div className="table-item booking-table">
+                <div className="table-item booking-table" >
                   <div className="table-number">Стол 1</div>
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
@@ -835,32 +893,32 @@ function App() {
                   <div className="table-type">Живая очередь (пул)</div>
                 </div>
 
-                <div className="table-item booking-table">
+                <div className="table-item booking-table" onClick={() => handleTableSelect(3)}>
                   <div className="table-number">Стол 3</div>
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item booking-table">
+                <div className="table-item booking-table" onClick={() => handleTableSelect(4)}>
                   <div className="table-number">Стол 4</div>
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item booking-table-black-cover">
+                <div className="table-item booking-table" onClick={() => handleTableSelect(5)}>
                   <div className="table-number">Стол 5</div>
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item booking-table">
+                <div className="table-item booking-table" onClick={() => handleTableSelect(6)}>
                   <div className="table-number">Стол 6</div>
                   <div className="table-type">Пул</div>
                 </div>
 
-                <div className="table-item booking-table-black-cover">
+                <div className="table-item booking-table-black-cover" onClick={() => handleTableSelect(7)}>
                   <div className="table-number">DARK ROOM</div>
                   <div className="table-type">Пул</div>
                 </div>
                 
-                <div className="table-item booking-table-blue-cover">
+                <div className="table-item booking-table-blue-cover" onClick={() => handleTableSelect(8)}>
                   <div className="table-number">WOOD ROOM</div>
                   <div className="table-type">Пул</div>
                 </div>
@@ -1007,7 +1065,7 @@ function App() {
             // Определяем диапазон столов в зависимости от выбранного клуба
             let tablesRange = [];
             if (selectedClub === 'Марата 56-58') {
-              tablesRange = [1, 2, 3, 4, 5, 6, 7]; // Столы с 1 по 7
+              tablesRange = [3, 4, 5, 6, 7]; // Столы с 1 по 7
             } else if (selectedClub === 'Каменноостровский 26-28') {
               tablesRange = [3, 4, 5, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
@@ -1182,12 +1240,14 @@ function App() {
                   tableName = 'WOOD ROOM'
                 }
               }
+              let price = 1500
               
              return (
                   <div className="booking-info">
                     <p><strong>Стол:</strong> {tableName}</p>
                     <p><strong>Дата:</strong> {selectedDate}</p>
                     <p><strong>Время:</strong> {selectedTimeSlot}</p>
+                    {/* <p><strong>Цена:</strong> {price}р/час</p> */}
                   </div>
                 );
             })()}
@@ -1241,6 +1301,14 @@ function App() {
                   ))}
                 </select>
               </div>
+
+              {(() => {
+                return (
+                  <div>
+                    <p><strong>Стоимость игры:</strong> {summaryPrice}₽</p>
+                  </div>
+                );
+              })()}
             </form>
 
             <div className="booking-popup-footer">
