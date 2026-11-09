@@ -1011,6 +1011,14 @@ body {
   margin-bottom: 14px;
 }
 
+.tables-grid-marata {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+
 .table-item {
   padding: 10px 8px;
   border-radius: 12px;
@@ -1177,9 +1185,6 @@ body {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .tables-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   .popup-content,
   .popup-confirm-content,
@@ -1227,7 +1232,242 @@ body {
   }
 
   .tables-grid {
-    grid-template-columns: 1fr 1fr;
     gap: 6px;
+  }
+}
+
+/* ===== СХЕМА ЗАЛА КИКС 2 (КАМЕННООСТРОВСКИЙ) ===== */
+
+.kiks2-scheme {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  background: #e6f3fa; /* Фон как у hall-scheme */
+  border-radius: 16px;
+  border: 1px solid #dcecf5;
+}
+
+.scheme-row-top,
+.scheme-row-middle,
+.scheme-row-bottom {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Общие стили для зон */
+.zone {
+  border: 2px solid #1a1a2e;
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #ffffff;
+}
+
+.zone-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1a1a2e;
+  margin-bottom: 8px;
+  text-transform: lowercase; /* Как на картинке */
+}
+
+/* Специфичные зоны */
+.zone-hall3 {
+  flex: 1;
+  min-width: 50%;
+}
+
+.zone-dark-room {
+  flex: 1;
+  min-width: 40%;
+  justify-content: space-between;
+}
+
+.zone-wood-room {
+  flex: 1;
+  min-width: 45%;
+  justify-content: space-between;
+}
+
+.zone-hall2 {
+  flex: 1;
+}
+
+.zone-bar {
+  flex: 0 0 20%; /* Узкая колонка для бара */
+  justify-content: center;
+  align-items: center;
+  background: #f0f8fe;
+}
+
+.zone-hall1 {
+  flex: 1;
+}
+
+/* Контейнеры внутри зон */
+.zone-content {
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex: 1;
+  gap: 8px;
+}
+
+.vertical-list {
+  flex-direction: column;
+}
+
+.horizontal-list {
+  flex-direction: column;
+  /* flex-direction: row; */
+  justify-content: flex-end; /* Выравнивание вправо как на схеме */
+  align-items: center;
+  padding-right: 10px;
+}
+
+.center-content {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Стили для столов внутри схемы (переопределяем) */
+.kiks2-scheme .table-item {
+  width: 100%;
+  max-width: 120px;
+  padding: 8px;
+  border-width: 1px; /* Тоньше рамка для схемы */
+  box-shadow: none;
+}
+
+.table-item.queue-table {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  border-style: dashed; /* Пунктир для "живой очереди" */
+}
+
+.kiks2-scheme .table-number {
+  font-size: 12px;
+}
+
+.kiks2-scheme .table-type {
+  font-size: 10px;
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 380px) {
+  .scheme-row-top,
+  .scheme-row-middle,
+  .scheme-row-bottom {
+    gap: 6px;
+  }
+  
+  .zone {
+    padding: 4px;
+  }
+  
+  .kiks2-scheme .table-item {
+    padding: 6px;
+  }
+  
+  .zone-title {
+    font-size: 12px;
+  }
+}
+
+/* ===== СХЕМА ЗАЛА СЕВКАБЕЛЬ ===== */
+
+.sevkabel-scheme {
+  display: grid;
+  grid-template-columns: 0fr 1.2fr 1fr; /* 3 колонки */
+  grid-template-rows: auto auto auto; /* 3 ряда */
+  gap: 16px;
+  padding: 10px;
+  background: #e6f3fa;
+  border-radius: 16px;
+  border: 1px solid #dcecf5;
+  align-items: center;
+  /* min-height: 350px; */
+}
+
+/* Размещение зон по сетке */
+.svk-queue {
+  grid-column: 2; /* Центральная колонка */
+  grid-row: 1;    /* Первый ряд */
+  justify-self: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.svk-table2 {
+  grid-column: 1; /* Левая колонка */
+  grid-row: 1 / span 2;    /* Второй ряд */
+  justify-self: start;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.svk-right-group {
+  grid-column: 3; /* Правая колонка */
+  grid-row: 2; /* Занимает второй и третий ряд */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Внутри группы 2 колонки */
+  gap: 12px;
+  justify-self: end;
+}
+
+.svk-bar {
+  grid-column: 2; /* Центральная колонка */
+  grid-row: 2 / span 5;    /* Третий ряд */
+  justify-self: center;
+  border: 2px solid #1a1a2e;
+  border-radius: 12px;
+  padding: 16px 24px;
+  background: #f0f8fe;
+  min-width: 100px;
+  text-align: center;
+}
+
+/* Настройка размеров столов внутри этой схемы */
+.sevkabel-scheme .table-item {
+  width: 100%;
+  /* min-width: 90px;  */
+  padding: 10px 6px;
+  border-width: 2px; 
+  box-shadow: none;
+}
+
+.sevkabel-scheme .table-number {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sevkabel-scheme .table-type {
+  font-size: 11px;
+}
+
+/* Адаптив для мобильных экранов */
+@media (max-width: 400px) {
+  .sevkabel-scheme {
+    gap: 10px;
+  }
+  
+  .svk-right-group {
+    gap: 8px;
+  }
+
+  .sevkabel-scheme .table-item {
+    min-width: 75px;
+    padding: 8px 4px;
+  }
+  
+  .sevkabel-scheme .table-number {
+    font-size: 12px;
   }
 }

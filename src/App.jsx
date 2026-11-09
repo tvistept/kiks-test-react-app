@@ -25,6 +25,7 @@ function App() {
   const [openDate, setOpenDate] = useState(null); // Состояние для открытой даты (чтобы показывать слоты)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null); // Состояние для выбранного временного слота
   const [isBookingPopupOpen, setBookingPopupOpen] = useState(false); // Состояние для попапа бронирования
+  const [isSchemePopupOpen, setSchemePopupOpen] = useState(false); // Состояние для попапа схемы
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -66,7 +67,7 @@ function App() {
       setSelectedTable(3);
     }
     else if (clubAddress == 'Севкабель') {
-      setSelectedTable(3);
+      setSelectedTable(2);
     }
     else if (clubAddress == 'НеКикс') {
       setSelectedTable(3);
@@ -295,6 +296,31 @@ function App() {
     }
   };
 
+  const handleTableSelectFromScheme = (tableNumber) => {
+    closeSchemePopup()
+    setSelectedTimeSlot(null);
+    setSelectedTable(tableNumber);
+    
+
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+    let tableName = `стол №${tableNumber}`
+    // Показываем информационный блок для 6-го стола на Каменноостровском
+    if (selectedClub === 'Каменноостровский 26-28' && (tableNumber === 8 || tableNumber === 7)) {
+      if (tableNumber ===7) {
+        tableName = 'зал DARK ROOM'
+      } else if (tableNumber === 8) {
+        tableName = 'зал WOOD ROOM'
+      }
+      setShowRussianBilliardInfo(true);
+    } else {
+      setShowRussianBilliardInfo(false);
+    }
+
+    setNotification(`Выбран ${tableName}`);
+  };
+
   const handleDateSelect = (date) => {
     if (openDate === date) {
       setOpenDate(null); // Закрываем слоты, если дата уже открыта
@@ -381,6 +407,14 @@ function App() {
       }
     }
     
+  };
+
+  const openSchemePopup = () => {
+    setSchemePopupOpen(true);
+  };
+
+  const closeSchemePopup = () => {
+    setSchemePopupOpen(false);
   };
 
   const closeBookingPopup = () => {
@@ -841,7 +875,261 @@ function App() {
           </div>
         )}
 
-        {/* Блок со схемой зала */}
+        <button 
+          // className="change-club-button"
+          // className="date-button-container"
+          className="date-button"
+          // className="hall-scheme"
+          onClick={openSchemePopup}
+        >
+          Схема зала
+        </button>
+
+        {/* Попап cо схемой зала */}
+        {isSchemePopupOpen && (
+          <div className="popup-overlay">
+            <div className="booking-popup-content">
+              <div className="booking-popup-header">
+                <h2>Cхема зала</h2>
+                <button className="close-icon" onClick={closeSchemePopup}>
+                  &times;
+                </button>
+              </div>
+
+              {/* Блок со схемой зала */}
+              <div className="hall-scheme" >
+                
+                {selectedClub === 'Марата 56-58' && (
+                  <div className="scheme-content">
+                    <div className="tables-grid-marata">
+                      <div className="table-item queue-table">
+                        <div className="table-number">Стол 1</div>
+                        <div className="table-type">живая очередь (8 футов)</div>
+                      </div>
+                      <div className="table-item queue-table">
+                        <div className="table-number">Стол 2</div>
+                        <div className="table-type">живая очередь (8 футов)</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(3)}>
+                        <div className="table-number">Стол 3</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(4)}>
+                        <div className="table-number">Стол 4</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(5)}>
+                        <div className="table-number">Стол 5</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(6)}>
+                        <div className="table-number">Стол 6</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(7)}>
+                        <div className="table-number">Стол 7</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedClub === 'Каменноостровский 26-28' && (
+                  <div className="scheme-content kiks2-scheme">
+                    {/* ВЕРХНЯЯ ЧАСТЬ: 3 зал и Dark Room */}
+                    <div className="scheme-row-top">
+                      
+                      {/* 3 ЗАЛ */}
+                      <div className="zone zone-hall3">
+                        <div className="zone-title">3 зал</div>
+                        <div className="zone-content vertical-list">
+                          <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(6)}>
+                            <div className="table-number">Стол 6</div>
+                            <div className="table-type">(пул)</div>
+                          </div>
+                          <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(5)}>
+                            <div className="table-number">Стол 5</div>
+                            <div className="table-type">(пул)</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* DARK ROOM */}
+                      <div className="zone zone-dark-room">
+                        <div className="zone-content center-content">
+                          <div className="table-item booking-table-black-cover" onClick={() => handleTableSelectFromScheme(7)}>
+                            <div className="table-number">DARK ROOM</div>
+                            <div className="table-type">(пул)</div>
+                          </div>
+                        </div>
+                        {/* <div className="zone-title">dark room</div> */}
+                      </div>
+                    </div>
+
+                    {/* СРЕДНЯЯ ЧАСТЬ: Wood Room и 2 зал */}
+                    <div className="scheme-row-middle">
+                      
+                      {/* WOOD ROOM */}
+                      <div className="zone zone-wood-room">
+                        <div className="zone-content center-content">
+                          <div className="table-item booking-table-blue-cover" onClick={() => handleTableSelectFromScheme(8)}>
+                            <div className="table-number">WOOD ROOM</div>
+                            <div className="table-type">(пул)</div>
+                          </div>
+                        </div>
+                        {/* <div className="zone-title">wood room</div> */}
+                      </div>
+
+                      {/* 2 ЗАЛ */}
+                      <div className="zone zone-hall2">
+                        <div className="zone-title">2 зал</div>
+                        <div className="zone-content vertical-list">
+                          <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(4)}>
+                            <div className="table-number">Стол 4</div>
+                            <div className="table-type">(пул)</div>
+                          </div>
+                          <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(3)}>
+                            <div className="table-number">Стол 3</div>
+                            <div className="table-type">(пул)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* НИЖНЯЯ ЧАСТЬ: Бар и 1 зал */}
+                    <div className="scheme-row-bottom">
+                      <div className="zone zone-bar">
+                        <div className="zone-title">бар</div>
+                      </div>
+                      <div className="zone zone-hall1">
+                        <div className="zone-title">1 зал</div>
+                        <div className="zone-content horizontal-list">
+                          <div className="table-item queue-table" style={{ opacity: 0.6, cursor: 'default' }}>
+                            <div className="table-number">Стол 1</div>
+                            <div className="table-type">живая очередь</div>
+                          </div>
+                          <div className="table-item queue-table" style={{ opacity: 0.6, cursor: 'default' }}>
+                            <div className="table-number">Стол 2</div>
+                            <div className="table-type">живая очередь</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedClub === 'Севкабель' && (
+                  <div className="scheme-content sevkabel-scheme">
+                    
+                    {/* Живая очередь (верх по центру) */}
+                    <div className="zone zone-queue svk-queue">
+                      <div className="table-item queue-table" style={{ opacity: 0.6, cursor: 'default' }}>
+                        <div className="table-number">стол 1</div>
+                        <div className="table-type">живая очередь</div>
+                      </div>
+                    </div>
+
+                    {/* Стол 2 (слева) */}
+                    <div className="zone zone-table svk-table2">
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(2)}>
+                        <div className="table-number">2</div>
+                        <div className="table-type">(пул)</div>
+                      </div>
+                    </div>
+
+                    {/* Правая группа столов (3, 4, 6, 5) */}
+                    <div className="svk-right-group">
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(3)}>
+                        <div className="table-number">3</div>
+                        <div className="table-type">(пул)</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(4)}>
+                        <div className="table-number">4</div>
+                        <div className="table-type">(пул)</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(6)}>
+                        <div className="table-number">6</div>
+                        <div className="table-type">(пул)</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(5)}>
+                        <div className="table-number">5</div>
+                        <div className="table-type">(пул)</div>
+                      </div>
+                    </div>
+
+                    {/* Бар (внизу по центру) */}
+                    <div className="zone zone-bar svk-bar">
+                      <div className="zone-title" style={{ margin: 0 }}>бар</div>
+                    </div>
+
+                  </div>
+                )}
+
+                {/* {selectedClub === 'Севкабель' && (
+                  <div className="scheme-content">
+                    <div className="tables-grid">
+                      <div className="table-item booking-table">
+                        <div className="table-number">Стол 1</div>
+                        <div className="table-type">Живая очередь (пул)</div>
+                      </div>
+                      <div className="table-item booking-table">
+                        <div className="table-number">Стол 2</div>
+                        <div className="table-type">Живая очередь (пул)</div>
+                      </div>
+                      <div className="table-item booking-table">
+                        <div className="table-number">Стол 3</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table">
+                        <div className="table-number">Стол 4</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table">
+                        <div className="table-number">Стол 5</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table">
+                        <div className="table-number">Стол 6</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                    </div>
+                  </div>
+                )} */}
+
+                {selectedClub === 'НеКикс' && (
+                  <div className="scheme-content">
+                    <div className="tables-grid">
+                      <div className="table-item queue-table">
+                        <div className="table-number">Стол 1</div>
+                        <div className="table-type">Живая очередь (пул)</div>
+                      </div>
+                      <div className="table-item queue-table">
+                        <div className="table-number">Стол 2</div>
+                        <div className="table-type">Живая очередь (пул)</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(3)}>
+                        <div className="table-number">Стол 3</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(4)}>
+                        <div className="table-number">Стол 4</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                      <div className="table-item booking-table" onClick={() => handleTableSelectFromScheme(5)}>
+                        <div className="table-number">Стол 5</div>
+                        <div className="table-type">Пул</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+             
+            </div>
+          </div>
+        )}
+        
+
+        {/* Блок со схемой зала
         <div className="hall-scheme">
           <h3>Схема зала</h3>
           
@@ -985,7 +1273,7 @@ function App() {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Блок с информацией и ссылкой на гугл-таблицу */}
         <div className="info-block">
@@ -1069,7 +1357,7 @@ function App() {
             } else if (selectedClub === 'Каменноостровский 26-28') {
               tablesRange = [3, 4, 5, 6, 7, 8]; 
             } else if (selectedClub === 'Севкабель') {
-              tablesRange = [3, 4, 5, 6 ]; 
+              tablesRange = [2, 3, 4, 5, 6 ]; 
             } else if (selectedClub === 'НеКикс') {
               tablesRange = [3, 4, 5 ]; 
             }
